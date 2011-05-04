@@ -1,0 +1,6 @@
+set (RCORE_SOURCES
+main.cpp
+)
+
+
+ADD_EXECUTABLE(test ${RCORE_SOURCES})
