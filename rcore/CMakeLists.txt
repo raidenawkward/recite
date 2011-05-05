@@ -1,5 +1,5 @@
 set (RCORE_SOURCES
-main.cpp
+src/main.cpp
 )
 
 
