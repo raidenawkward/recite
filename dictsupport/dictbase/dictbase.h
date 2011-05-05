@@ -5,6 +5,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <string>
+
+
+using namespace std;
 
 class DictBase
 {
@@ -12,10 +16,15 @@ public:
 	DictBase(){};
 	virtual ~DictBase(){};
 
-	virtual bool setDict(const char* dict) = 0;
-	virtual char* getDictDir() = 0;
-	virtual char* getResult(const char* word) = 0;
-	virtual char* getIndexWord(int index) = 0;
+	virtual bool setDict(const string dict) = 0;
+	virtual string getDictDir() = 0;
+	virtual string getResult(const string word) = 0;
+	virtual string getIndexWord(int index) = 0;
+	virtual int getWordIndex(const string word) = 0;
+	virtual string getIndexResult(int index, string &indexWord) = 0;
+
+	virtual bool isDictInvalid();
+	virtual bool isDictInvalid(const string dict) = 0;
 };
 
 

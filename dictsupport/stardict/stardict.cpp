@@ -6,6 +6,55 @@
 #include "dict_idx.h"
 
 
+StarDict::StarDict()
+{
+
+}
+
+StarDict::StarDict(const string dir)
+{
+
+}
+
+StarDict::~StarDict()
+{
+
+}
+
+bool StarDict::setDict(const string dir)
+{
+	return false;
+}
+
+string StarDict::getDictDir()
+{
+
+}
+
+string StarDict::getResult(const string word)
+{
+
+}
+
+string StarDict::getIndexWord(int index)
+{
+
+}
+
+int StarDict::getWordIndex(const string word)
+{
+
+}
+
+
+
+
+
+
+
+
+
+
 int main(int argc,char** argv)
 {
 		char* ifo_name="../dict/stardict-langdao-ec-gb-2.4.2/langdao-ec-gb.ifo";
