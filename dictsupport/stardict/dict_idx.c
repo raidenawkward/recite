@@ -20,7 +20,8 @@
 #include <string.h>
 #include "dict_info.h"
 #include "dict_idx.h"
-static void* get_words(char* filename,DICT_INFO* dict_info,WORD_IDX* word_idx)
+
+void* get_words(char* filename,DICT_INFO* dict_info,WORD_IDX* word_idx)
 {
     FILE* fd=fopen(filename,"rb");
     size_t nread=0;
@@ -28,14 +29,12 @@ static void* get_words(char* filename,DICT_INFO* dict_info,WORD_IDX* word_idx)
     {
         return NULL;
     }
-	printf("dict_info->idx_file_size = %d\n",dict_info->idx_file_size);
-
 	//unsigned char buffer[dict_info->idx_file_size];
-	// raidne fixed on 20110505
-	unsigned char* buffer = (unsigned char*)malloc(sizeof(unsigned char*)*dict_info->idx_file_size);
+	// raiden fixed on 20110505
+	unsigned char* buffer = (unsigned char*)malloc(sizeof(unsigned char)*dict_info->idx_file_size);
 
     nread=fread(buffer,dict_info->idx_file_size,1,fd);
-    unsigned char *head,*tail;
+	unsigned char *head,*tail;
     head=tail=buffer;
     int it=0;
     int total=1;
@@ -88,7 +87,8 @@ WORD_IDX* get_idx(char* word,WORD_IDX *word_idx,DICT_INFO *dict_info)
     return NULL;
 }
 
-#if 1
+
+#if 0
 
 int main(int argc,char** argv)
 {

@@ -21,13 +21,23 @@
 #define DEBUG
 #define TRUE 1
 #define IDX_EXT "idx"
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 typedef struct
 {
     char word[100];
     int offset;
     int length;
 }WORD_IDX;
-static void* get_words(char* filename,DICT_INFO* dict_info,WORD_IDX* word_idx);
+void* get_words(char* filename,DICT_INFO* dict_info,WORD_IDX* word_idx);
 WORD_IDX *get_idx(char* word,WORD_IDX* word_idx,DICT_INFO* dict_info);
 inline static int to_int(unsigned char* from_int);
+
+#ifdef __cplusplus
+}// extern c
+#endif
+
 #endif

@@ -20,6 +20,11 @@
 #define DEBUG
 #define BUFFER_SIZE 500
 #define IFO_EXT ".ifo"
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 typedef struct{
     char version[100];//版本
     int word_count;//单词数量
@@ -30,4 +35,10 @@ typedef struct{
 }DICT_INFO;
 DICT_INFO* get_dict_info(char* line);
 static void parse_line(char* line,DICT_INFO* dict_info);
+
+
+#ifdef __cplusplus
+}// extern c
+#endif
+
 #endif
