@@ -7,10 +7,6 @@
 #include "dictbase.h"
 
 
-#define DICTPATH_LENGTH 1024
-
-
-
 class StarDict : public DictBase
 {
 public:
@@ -27,10 +23,9 @@ public:
 	string getIndexResult(int index, string &indexWord);
 
 	bool isDictInvalid();
-	bool isDictInvalid(const string dict);
+	bool isDictInvalid(const string dictDir);
 
 private:
-	void setDir(const string dir);
 	void setIFO(const string ifo);
 	void setIDX(const string idx);
 	void setDICT(const string dict);
@@ -42,7 +37,7 @@ private:
 protected:
 	virtual bool isIFOInvalid(const string ifo);
 	virtual bool isIDXInvalid(const string idx);
-	virtual bool isDICTInvalid(const string dict);
+	virtual bool isDICTFileInvalid(const string dict);
 
 private:
 	string _dictDir;

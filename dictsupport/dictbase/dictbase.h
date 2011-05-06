@@ -13,8 +13,8 @@ using namespace std;
 class DictBase
 {
 public:
-	DictBase(){};
-	virtual ~DictBase(){};
+	DictBase();
+	virtual ~DictBase();
 
 	virtual bool setDict(const string dict) = 0;
 	virtual string getDictDir() = 0;
@@ -23,7 +23,7 @@ public:
 	virtual int getWordIndex(const string word) = 0;
 	virtual string getIndexResult(int index, string &indexWord) = 0;
 
-	virtual bool isDictInvalid();
+	virtual bool isDictInvalid() = 0;
 	virtual bool isDictInvalid(const string dict) = 0;
 };
 
