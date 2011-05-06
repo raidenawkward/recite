@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "dictbase.h"
+#include "dict_idx.h"
 
 
 class StarDict : public DictBase
@@ -18,21 +19,25 @@ public:
 	bool setDict(const string dir);
 	string getDictDir();
 	string getResult(const string word);
+
 	string getIndexWord(int index);
 	int getWordIndex(const string word);
+
 	string getIndexResult(int index, string &indexWord);
 
 	bool isDictInvalid();
 	bool isDictInvalid(const string dictDir);
 
+	string getIFO();
+	string getIDX();
+	string getDICT();
 private:
 	void setIFO(const string ifo);
 	void setIDX(const string idx);
 	void setDICT(const string dict);
 
-	string getIFO();
-	string getIDX();
-	string getDICT();
+	WORD_IDX* getWordIndexInDict(const string word);
+	string getIndexWord(WORD_IDX* wordIndex);
 
 protected:
 	virtual bool isIFOInvalid(const string ifo);
@@ -44,6 +49,7 @@ private:
 	string _ifo;
 	string _idx;
 	string _dict;
+	WORD_IDX* _wordIndex;
 };
 
 

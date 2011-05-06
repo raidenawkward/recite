@@ -6,7 +6,6 @@
 #include <dirent.h>
 
 #include "dict_info.h"
-#include "dict_idx.h"
 
 using namespace std;
 
@@ -26,7 +25,7 @@ string detachFileFromPath(const string path) {
 }
 
 string getFileExt(const string fileName) {
-	int pos = fileName.rfind("/");
+	int pos = fileName.rfind(".");
 	if (pos >= 0)
 		return fileName.substr(pos + 1);
 	return string();
@@ -53,7 +52,7 @@ string searchInDir(const string dir, const string fileExt) {
 			string file(direntp->d_name);
 			if (getFileExt(file) == fileExt) {
 				closedir(dirp);
-				return file;
+				return dir + string("/") + file;
 			}
 		}
 		closedir( dirp );
@@ -62,19 +61,25 @@ string searchInDir(const string dir, const string fileExt) {
 }
 
 StarDict::StarDict() {
-
+	_wordIndex = NULL;
 }
 
 StarDict::StarDict(const string dir) {
+	_wordIndex = NULL;
 	setDict(dir);
 }
 
 StarDict::~StarDict() {
-
+	if (_wordIndex)
+		free(_wordIndex);
 }
 
 bool StarDict::setDict(const string dir) {
 	bool ret = false;
+	if (_wordIndex) {
+		free(_wordIndex);
+		_wordIndex = NULL;
+	}
 	if (!fileExists(dir)) {
 		return ret;
 	}
@@ -102,8 +107,41 @@ string StarDict::getDictDir() {
 	return _dictDir;
 }
 
-string StarDict::getResult(const string word) {
+WORD_IDX* StarDict::getWordIndexInDict(const string wordToCheck) {
+	DICT_INFO* dict_info;
+	dict_info = get_dict_info((char*)_ifo.c_str());
+	if (!_wordIndex)
+		_wordIndex = (WORD_IDX*)malloc(sizeof(WORD_IDX)*dict_info->word_count);
+	get_words((char*)_idx.c_str(),dict_info,_wordIndex);
+	WORD_IDX* word = get_idx((char*)wordToCheck.c_str(),_wordIndex,dict_info);
 
+	return word;
+}
+
+string StarDict::getIndexWord(WORD_IDX* index) {
+	if (index == NULL) {
+		return string("<NULL>\n");
+	}
+
+	FILE* fp_dict = fopen(_dict.c_str(),"r");
+	if(fp_dict == NULL) {
+		return string("<NULL>\n");
+	}
+
+	if(fseek(fp_dict,index->offset,SEEK_SET)) {
+		return string("<NULL>\n");
+	}
+	char explain[index->length + 1];
+	memset(explain,'\0',index->length + 1);
+	fread(explain,index->length,1,fp_dict);
+	return string(explain);
+}
+
+string StarDict::getResult(const string wordToCheck) {
+	// word_index is one of _wordIndex, need not to free
+	WORD_IDX* word_index = getWordIndexInDict(wordToCheck);
+	string ret = getIndexWord(word_index);
+	return ret;
 }
 
 string StarDict::getIndexWord(int index) {
@@ -207,10 +245,30 @@ bool StarDict::isDICTFileInvalid(const string dict) {
 
 
 
+int main(int argc, char** argv) {
+	StarDict *stardict = new StarDict("../dict/stardict-langdao-ec-gb-2.4.2/");
+
+	DictBase *base = stardict;
+
+	if (!base->isDictInvalid()) {
+		printf("dict invalid !\n");
+		return -1;
+	}
+	printf("ifo : %s\nidx : %s\ndict : %s\n",stardict->getIFO().c_str(),stardict->getIDX().c_str(),stardict->getDICT().c_str());
+
+	for (int i = 1; i < argc; ++i) {
+		printf("searching : %s\n",argv[i]);
+		string result = base->getResult(string(argv[i]));
+		printf("result : \n");
+		printf("%s\n",result.c_str());
+	}
+	return 0;
+}
 
 
 
 
+#if 0
 
 int main(int argc,char** argv)
 {
@@ -248,3 +306,5 @@ int main(int argc,char** argv)
 		free(idx);
 		return EXIT_SUCCESS;
 }
+
+#endif
