@@ -10,6 +10,8 @@
 
 using namespace std;
 
+#define DICT_EMPTY_RESULT "<NULL>"
+
 class DictBase
 {
 public:
@@ -22,6 +24,10 @@ public:
 	virtual string getIndexWord(int index) = 0;
 	virtual int getWordIndex(const string word) = 0;
 	virtual string getIndexResult(int index, string &indexWord) = 0;
+	virtual string getIndexResult(int index) = 0;
+
+	virtual int getWordCount() = 0;
+	virtual string getDictName() = 0;
 
 	virtual bool isDictInvalid() = 0;
 	virtual bool isDictInvalid(const string dict) = 0;

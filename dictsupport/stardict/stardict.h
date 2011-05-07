@@ -24,9 +24,13 @@ public:
 	int getWordIndex(const string word);
 
 	string getIndexResult(int index, string &indexWord);
+	string getIndexResult(int index);
 
 	bool isDictInvalid();
 	bool isDictInvalid(const string dictDir);
+
+	int getWordCount();
+	string getDictName();
 
 	string getIFO();
 	string getIDX();

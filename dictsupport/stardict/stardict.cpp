@@ -125,16 +125,16 @@ WORD_IDX* StarDict::getWordIndexInDict(const string wordToCheck) {
 
 string StarDict::getIndexWord(WORD_IDX* index) {
 	if (index == NULL) {
-		return string("<NULL>\n");
+		return string(DICT_EMPTY_RESULT);
 	}
 
 	FILE* fp_dict = fopen(_dict.c_str(),"r");
 	if(fp_dict == NULL) {
-		return string("<NULL>\n");
+		return string(DICT_EMPTY_RESULT);
 	}
 
 	if(fseek(fp_dict,index->offset,SEEK_SET)) {
-		return string("<NULL>\n");
+		return string(DICT_EMPTY_RESULT);
 	}
 	char explain[index->length + 1];
 	memset(explain,'\0',index->length + 1);
@@ -150,15 +150,44 @@ string StarDict::getResult(const string wordToCheck) {
 }
 
 string StarDict::getIndexWord(int index) {
-
+	string ret;
+	if (!_dictInfo)
+			return ret;
+	if (index < 0 || index > _dictInfo->word_count)
+		return ret;
+	WORD_IDX* word_index = &_wordIndex[index];
+	ret = string(word_index->word);
+	return ret;
 }
 
 int StarDict::getWordIndex(const string word) {
-
+	int head = 0;
+	int tail = 0;
+	int mid = 0;
+	while (head < tail - 1) {
+		mid = (tail + head) >> 1;
+		int cmp = strcasecmp(word.c_str(), _wordIndex[mid].word);
+		if (cmp == 0) {
+			return mid;
+		} else if (cmp < 0) {
+			tail = mid;
+		} else {
+			head = mid;
+		}
+	}
+	return -1;
 }
 
 string StarDict::getIndexResult(int index, string &indexWord) {
+	indexWord = getIndexWord(index);
+	if (!indexWord.empty()) {
+		return getResult(indexWord);
+	}
+	return string();
+}
 
+string StarDict::getIndexResult(int index) {
+	return getResult(getIndexWord(index));
 }
 
 bool StarDict::isDictInvalid() {
@@ -218,6 +247,19 @@ string StarDict::getDICT() {
 	return _dict;
 }
 
+int StarDict::getWordCount() {
+	if (_dictInfo)
+		return _dictInfo->word_count;
+	return 0;
+}
+
+string StarDict::getDictName() {
+	string ret;
+	if (_dictInfo)
+		return _dictInfo->book_name;
+	return ret;
+}
+
 bool StarDict::isIFOInvalid(const string ifo) {
 	bool ret = false;
 	if (!fileExists(ifo)) {
@@ -251,7 +293,6 @@ bool StarDict::isDICTFileInvalid(const string dict) {
 }
 
 
-
 int main(int argc, char** argv) {
 	StarDict *stardict = new StarDict("../dict/stardict-langdao-ec-gb-2.4.2/");
 
@@ -263,16 +304,20 @@ int main(int argc, char** argv) {
 	}
 	printf("ifo : %s\nidx : %s\ndict : %s\n",stardict->getIFO().c_str(),stardict->getIDX().c_str(),stardict->getDICT().c_str());
 
-	for (int i = 1; i < argc; ++i) {
+	/*for (int i = 1; i < argc; ++i) {
 		printf("searching : %s\n",argv[i]);
 		string result = base->getResult(string(argv[i]));
 		printf("result : \n");
 		printf("%s\n",result.c_str());
+	}*/
+	printf("dict name : %s\n",base->getDictName().c_str());
+
+	for (int i = 100; i < 109; ++i) {
+		printf("checking index(%d) : %s\n",i,base->getIndexWord(i).c_str());
+		printf("%s\n",base->getIndexResult(i).c_str());
 	}
 	return 0;
 }
-
-
 
 
 #if 0
