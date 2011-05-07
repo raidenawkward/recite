@@ -50,6 +50,7 @@ private:
 	string _idx;
 	string _dict;
 	WORD_IDX* _wordIndex;
+	DICT_INFO* _dictInfo;
 };
 
 

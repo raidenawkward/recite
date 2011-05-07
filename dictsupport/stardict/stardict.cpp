@@ -62,10 +62,12 @@ string searchInDir(const string dir, const string fileExt) {
 
 StarDict::StarDict() {
 	_wordIndex = NULL;
+	_dictInfo = NULL;
 }
 
 StarDict::StarDict(const string dir) {
 	_wordIndex = NULL;
+	_dictInfo = NULL;
 	setDict(dir);
 }
 
@@ -80,6 +82,11 @@ bool StarDict::setDict(const string dir) {
 		free(_wordIndex);
 		_wordIndex = NULL;
 	}
+	if (_dictInfo) {
+		free(_dictInfo);
+		_dictInfo = NULL;
+	}
+	
 	if (!fileExists(dir)) {
 		return ret;
 	}
@@ -100,6 +107,9 @@ bool StarDict::setDict(const string dir) {
 		return ret;
 	}
 
+	_dictInfo = get_dict_info((char*)_ifo.c_str());
+	_wordIndex = (WORD_IDX*)malloc(sizeof(WORD_IDX)*_dictInfo->word_count);
+
 	return  isDictInvalid();
 }
 
@@ -108,13 +118,8 @@ string StarDict::getDictDir() {
 }
 
 WORD_IDX* StarDict::getWordIndexInDict(const string wordToCheck) {
-	DICT_INFO* dict_info;
-	dict_info = get_dict_info((char*)_ifo.c_str());
-	if (!_wordIndex)
-		_wordIndex = (WORD_IDX*)malloc(sizeof(WORD_IDX)*dict_info->word_count);
-	get_words((char*)_idx.c_str(),dict_info,_wordIndex);
-	WORD_IDX* word = get_idx((char*)wordToCheck.c_str(),_wordIndex,dict_info);
-
+	get_words((char*)_idx.c_str(),_dictInfo,_wordIndex);
+	WORD_IDX* word = get_idx((char*)wordToCheck.c_str(),_wordIndex,_dictInfo);
 	return word;
 }
 
@@ -177,7 +182,9 @@ bool StarDict::isDictInvalid(const string dictDir) {
 	if (!isIDXInvalid(_idx)) {
 		return ret;
 	}
-	ret = true;
+
+	ret = (_wordIndex && _dictInfo);
+
 	return ret;
 }
 
