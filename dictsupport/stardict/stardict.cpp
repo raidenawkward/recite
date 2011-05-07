@@ -110,10 +110,10 @@ bool StarDict::setDict(const string dir) {
 	_dictInfo = get_dict_info((char*)_ifo.c_str());
 	_wordIndex = (WORD_IDX*)malloc(sizeof(WORD_IDX)*_dictInfo->word_count);
 
-	return  isDictInvalid();
+	return  isDictValid();
 }
 
-string StarDict::getDictDir() {
+string StarDict::getDictPath() {
 	return _dictDir;
 }
 
@@ -190,25 +190,25 @@ string StarDict::getIndexResult(int index) {
 	return getResult(getIndexWord(index));
 }
 
-bool StarDict::isDictInvalid() {
-	return isDictInvalid(_dictDir);
+bool StarDict::isDictValid() {
+	return isDictValid(_dictDir);
 }
 
-bool StarDict::isDictInvalid(const string dictDir) {
+bool StarDict::isDictValid(const string dictDir) {
 	bool ret = false;
 	if (!fileExists(dictDir)) {
 		return ret;
 	}
 
-	if (!isDICTFileInvalid(_dict)) {
+	if (!isDICTFileValid(_dict)) {
 		return ret;
 	}
 
-	if (!isIFOInvalid(_ifo)) {
+	if (!isIFOValid(_ifo)) {
 		return ret;
 	}
 
-	if (!isIDXInvalid(_idx)) {
+	if (!isIDXValid(_idx)) {
 		return ret;
 	}
 
@@ -218,19 +218,19 @@ bool StarDict::isDictInvalid(const string dictDir) {
 }
 
 void StarDict::setIFO(const string ifo) {
-	if (isIFOInvalid(ifo)) {
+	if (isIFOValid(ifo)) {
 		_ifo = ifo;
 	}
 }
 
 void StarDict::setIDX(const string idx) {
-	if (isIDXInvalid(idx)) {
+	if (isIDXValid(idx)) {
 		_idx = idx;
 	}
 }
 
 void StarDict::setDICT(const string dict) {
-	if (isDICTFileInvalid(dict)) {
+	if (isDICTFileValid(dict)) {
 		_dict = dict;
 	}
 }
@@ -260,7 +260,7 @@ string StarDict::getDictName() {
 	return ret;
 }
 
-bool StarDict::isIFOInvalid(const string ifo) {
+bool StarDict::isIFOValid(const string ifo) {
 	bool ret = false;
 	if (!fileExists(ifo)) {
 		return ret;
@@ -273,7 +273,7 @@ bool StarDict::isIFOInvalid(const string ifo) {
 	return ret;
 }
 
-bool StarDict::isIDXInvalid(const string idx) {
+bool StarDict::isIDXValid(const string idx) {
 	bool ret = false;
 	if (!fileExists(idx)) {
 		return ret;
@@ -285,7 +285,7 @@ bool StarDict::isIDXInvalid(const string idx) {
 	return ret;
 }
 
-bool StarDict::isDICTFileInvalid(const string dict) {
+bool StarDict::isDICTFileValid(const string dict) {
 	if (fileExists(dict)) {
 		return true;
 	}
@@ -298,7 +298,7 @@ int main(int argc, char** argv) {
 
 	DictBase *base = stardict;
 
-	if (!base->isDictInvalid()) {
+	if (!base->isDictValid()) {
 		printf("dict invalid !\n");
 		return -1;
 	}

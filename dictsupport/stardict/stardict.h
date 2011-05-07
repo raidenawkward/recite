@@ -17,7 +17,7 @@ public:
 	virtual ~StarDict();
 
 	bool setDict(const string dir);
-	string getDictDir();
+	string getDictPath();
 	string getResult(const string word);
 
 	string getIndexWord(int index);
@@ -26,8 +26,8 @@ public:
 	string getIndexResult(int index, string &indexWord);
 	string getIndexResult(int index);
 
-	bool isDictInvalid();
-	bool isDictInvalid(const string dictDir);
+	bool isDictValid();
+	bool isDictValid(const string dictDir);
 
 	int getWordCount();
 	string getDictName();
@@ -44,9 +44,9 @@ private:
 	string getIndexWord(WORD_IDX* wordIndex);
 
 protected:
-	virtual bool isIFOInvalid(const string ifo);
-	virtual bool isIDXInvalid(const string idx);
-	virtual bool isDICTFileInvalid(const string dict);
+	virtual bool isIFOValid(const string ifo);
+	virtual bool isIDXValid(const string idx);
+	virtual bool isDICTFileValid(const string dict);
 
 private:
 	string _dictDir;

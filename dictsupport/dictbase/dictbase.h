@@ -19,7 +19,7 @@ public:
 	virtual ~DictBase();
 
 	virtual bool setDict(const string dict) = 0;
-	virtual string getDictDir() = 0;
+	virtual string getDictPath() = 0;
 	virtual string getResult(const string word) = 0;
 	virtual string getIndexWord(int index) = 0;
 	virtual int getWordIndex(const string word) = 0;
@@ -29,8 +29,8 @@ public:
 	virtual int getWordCount() = 0;
 	virtual string getDictName() = 0;
 
-	virtual bool isDictInvalid() = 0;
-	virtual bool isDictInvalid(const string dict) = 0;
+	virtual bool isDictValid() = 0;
+	virtual bool isDictValid(const string dict) = 0;
 };
 
 
