@@ -2,7 +2,9 @@
 #include <stdlib.h>
 #include <string.h>
 
-
+#include "rcore.h"
+#include "dictbase.h"
+#include "stardict.h"
 
 void argvsAnalyse(int argc, char** argv);
 void doCommand( const char* cmd, const char* param);
@@ -11,7 +13,8 @@ void commandError(const char* cmd);
 
 int main(int argc, char** argv)
 {
-	
+	StarDict* dict = new StarDict();
+	DictBase* base = dict;
 	argvsAnalyse(argc,argv);
 	return 0;
 }
