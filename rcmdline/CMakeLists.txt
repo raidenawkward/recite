@@ -8,6 +8,7 @@ INCLUDE_DIRECTORIES(
 
 set (CMDLINE_SOURCES
     src/main.cpp
+	src/cmds.cpp
 )
 
 ADD_EXECUTABLE(recite ${CMDLINE_SOURCES})
