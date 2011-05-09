@@ -7,7 +7,7 @@
 #include "stardict.h"
 
 
-#define DEFAULT_DICT_PATH "../dictsupport/dict/stardict-langdao-ec-gb-2.4.2/"
+#define DEFAULT_DICT_PATH "dictsupport/dict/stardict-langdao-ec-gb-2.4.2/"
 
 int main(int argc, char** argv) {
 	RCore *core = new RCore();
