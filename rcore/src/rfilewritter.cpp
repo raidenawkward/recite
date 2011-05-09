@@ -40,6 +40,57 @@ rfile_error_t RFileWritter::open(ropen_mode_t mode) {
 	return this->open(_path,mode);
 }
 
+void RFileWritter::close() {
+	if (!isStreamOpenned())
+		return;
+	_stream->close();
+}
+
+bool RFileWritter::isStreamOpenned() {
+	if (!_stream)
+		return false;
+	return _stream->is_open();
+}
+
+rfile_error_t RFileWritter::writeLine(const string &line) {
+	if (!isStreamOpenned())
+		return RERR_CANNOTWRITE;
+	*_stream<<line<<endl;
+	return RERR_OK;
+}
+
+rfile_error_t RFileWritter::writeLine(const string &line,int times) {
+	rfile_error_t ret = RERR_OK;
+	for (int i = 0; i < times; ++i) {
+		ret = this->writeLine(line);
+	}
+	return ret;
+}
+
+rfile_error_t RFileWritter::write(const string &content) {
+	if (!isStreamOpenned())
+		return RERR_CANNOTWRITE;
+	*_stream<<content;
+	return RERR_OK;
+}
+
+rfile_error_t RFileWritter::readLine(string &line, int lineSize) {
+	if (!isStreamOpenned())
+		return RERR_CANNOTREAD;
+	char ret[lineSize];
+	memset(ret,0x00,lineSize);
+	_stream->getline(ret,lineSize);
+	line = string(ret);
+	return RERR_OK;
+}
+
+rfile_error_t RFileWritter::read(string &content) {
+	if (!isStreamOpenned())
+        return RERR_CANNOTREAD;
+	*_stream>>content;
+	return RERR_OK;
+}
+
 int RFileWritter::getStreamMode(ropen_mode_t mode) {
 	int ret = ios::in;
 	switch (mode) {

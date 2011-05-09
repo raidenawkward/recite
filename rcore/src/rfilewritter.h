@@ -9,6 +9,9 @@
 
 using namespace std;
 
+
+#define STREAM_LINE_SIZE 512
+
 /// file prop
 enum rfile_prop_t {
 	RFILEPROP_NORMAL = 0,
@@ -26,7 +29,7 @@ enum rfile_error_t {
 	RERR_NOTFOUND,     ///< file not found
 	RERR_NOTIMPL,      ///< method is not implemented
 	RERR_CANNOTWRITE,
-	RERR_CANNOTREAD
+	RERR_CANNOTREAD,
 };
 
 /// File open modes enum
@@ -54,16 +57,15 @@ public:
 	string getPath() { return _path; }
 
 	rfile_error_t writeLine(const string &line);
-	rfile_error_t writeLine(const string &line,int times = 1);
+	rfile_error_t writeLine(const string &line,int times);
 	rfile_error_t write(const string &content);
-	rfile_error_t readLine(string &line);
+	rfile_error_t readLine(string &line, int lineSize = STREAM_LINE_SIZE);
 	rfile_error_t read(string &content);
 
 protected:
 	int getStreamMode(ropen_mode_t mode);
 private:
 	string _path;
-	rfile_prop_t _prop;
 	ropen_mode_t _mode;
 	fstream *_stream;
 };
