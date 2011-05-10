@@ -5,6 +5,7 @@ set (RCORE_SOURCES
 	src/rcore.cpp
 	src/rrecord.cpp
 	src/rfilewritter.cpp
+	src/rcoding.cpp
 )
 
 INCLUDE_DIRECTORIES(
