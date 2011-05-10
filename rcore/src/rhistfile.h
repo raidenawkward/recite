@@ -42,25 +42,27 @@ enum ropen_mode_t {
 	ROPENMODE_READWRITE      ///< readwrite mode
 };
 
-class RFileWritter
+class RHistFile
 {
 public:
-	RFileWritter();
-	RFileWritter(const string file);
-	~RFileWritter();
+	RHistFile();
+	RHistFile(const string file);
+	~RHistFile();
 
 	rfile_error_t open(ropen_mode_t mode = ROPENMODE_READ);
 	rfile_error_t open(const string file, ropen_mode_t mode = ROPENMODE_READ);
 	void close();
+	void reset();
 	bool isStreamOpenned();
 
 	string getPath() { return _path; }
+	int getFileSize();
 
 	rfile_error_t writeLine(const string &line);
 	rfile_error_t writeLine(const string &line,int times);
 	rfile_error_t write(const string &content);
 	rfile_error_t readLine(string &line, int lineSize = STREAM_LINE_SIZE);
-	rfile_error_t read(string &content);
+	rfile_error_t readAll(string &content);
 
 protected:
 	int getStreamMode(ropen_mode_t mode);

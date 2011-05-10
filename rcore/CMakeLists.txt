@@ -4,7 +4,7 @@ CMAKE_MINIMUM_REQUIRED(VERSION 2.6)
 set (RCORE_SOURCES
 	src/rcore.cpp
 	src/rrecord.cpp
-	src/rfilewritter.cpp
+	src/rhistfile.cpp
 	src/rcoding.cpp
 )
 
