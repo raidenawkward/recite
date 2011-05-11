@@ -1,5 +1,6 @@
 #include "rhistfile.h"
 
+
 RHistFile::RHistFile()
 		:_mode(ROPENMODE_READ)
 		,_stream(NULL)
@@ -146,17 +147,124 @@ int RHistFile::getStreamMode(ropen_mode_t mode) {
 RIniFile::RIniFile(const string file)
 		:RHistFile(file)
 {
-	this->open(ROPENMODE_READWRITE);
+	loadRecord();
 }
 
 RIniFile::~RIniFile() {
 	close();
 }
 
+bool RIniFile::setValue(const string key, const string value) {
+	if (key.empty()) {
+		return false;
+	}
+	for (int i = 0; i < _record.size(); ++i) {
+		pair<string,string> item = _record.at(i);
+		if (item.first == key) {
+			item.second = value;
+			return true;
+		}
+	}
+	pair<string,string> item(key,value);
+	_record.push_back(item);
+}
+
+bool RIniFile::setValue(const string key, int value) {
+	char temp[512];
+	sprintf(temp,"%d",value);
+	return setValue(key,string(temp));
+}
+
+string RIniFile::remove(const string key) {
+	string ret;
+	if (key.empty())
+		return ret;
+	vector<pair<string,string> >::iterator it = _record.begin();
+	while (it != _record.end()) {
+		pair<string,string> item = *it;
+		if (item.first == key) {
+			ret = item.second;
+			_record.erase(it);
+			return ret;
+		}
+		++it;
+	}
+	return ret;
+}
+
+string RIniFile::remove(int index) {
+	string ret;
+	int count = _record.size();
+	if (index < 0 || index > count)
+		return ret;
+	int cur = 0;
+	vector<pair<string,string> >::iterator it = _record.begin();
+	while (it != _record.end()) {
+		if (cur == index) {
+			ret = (*it).second;
+			_record.erase(it);
+			return ret;
+		}
+		++cur;
+		++it;
+	}
+	return ret;
+}
+
+string RIniFile::getValue(const string key) {
+	string ret;
+	if (key.empty())
+		return ret;
+	for (int i = 0; i < _record.size(); ++i) {
+		pair<string,string> item = _record.at(i);
+		if (item.first == key) {
+			return item.second;
+		}
+	}
+	return ret;
+}
+
+vector<string> RIniFile::getKeys() {
+	vector<string> ret;
+	for (int i = 0; i < _record.size(); ++i) {
+		ret.push_back(_record.at(i).first);
+	}
+	return ret;
+}
+
+int RIniFile::getRecordCount() {
+	return _record.size();
+}
+
+string make_ini_item(const string key, const string value) {
+	string ret;
+	if (key.empty())
+		return ret;
+	ret = key;
+	ret += RINIFILE_CHAR_EQ;
+	ret += value;
+}
+
+bool RIniFile::save() {
+	int size = _record.size();
+	if (!size) {
+		return false;
+	}
+	this->open(ROPENMODE_WRITE);
+	//reset();
+	for (int i = 0; i < size; ++i) {
+		pair<string,string> item = _record[i];
+		string line = make_ini_item(item.first,item.second);
+		writeLine(line);
+	}
+	close();
+	return true;
+}
+
 string peel_first_word(string& str) {
 	string ret;
 	if (str.empty())
-			return ret;
+		return ret;
 	while (str.length()) {
 		char ch = str[0];
 		str.erase(0,1);
@@ -186,21 +294,21 @@ void peel_str_bothsides_quotesmark(string& str) {
 	}
 }
 
-bool RIniFile::parseLine(const string line, string& arg, string& value) {
+bool RIniFile::parseLine(const string line, string& key, string& value) {
 	bool ret = false;
 	if (line.empty())
 		return ret;
 
 	string line_to_parse = line;
-	// get arg
-	arg = peel_first_word(line_to_parse);
+	// get key
+	key = peel_first_word(line_to_parse);
 	// get 'equal'
 	peel_first_word(line_to_parse);
 	// get value
 	value = peel_first_word(line_to_parse);
 	peel_str_bothsides_quotesmark(value);
-	if (arg.empty() || value.empty()) {
-		arg.clear();
+	if (key.empty() || value.empty()) {
+		key.clear();
 		value.clear();
 		return ret;
 	}
@@ -210,16 +318,15 @@ bool RIniFile::parseLine(const string line, string& arg, string& value) {
 
 int RIniFile::loadRecord() {
 	string line;
-
-	while (readLine(line)) {
-		string arg;
+	open(ROPENMODE_READ);
+	while (readLine(line) != RERR_CANNOTREAD) {
+		string key;
 		string value;
-		if (parseLine(line,arg,value)) {
-			pair<string,string> recordLine(arg,value);
-			_record.insert(recordLine);
+		if (parseLine(line,key,value)) {
+			pair<string,string> recordLine(key,value);
+			_record.push_back(recordLine);
 		}
 	}
-
 	close();
 	return _record.size();
 }

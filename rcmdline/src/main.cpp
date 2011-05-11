@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
+#include <vector>
 #include "rcore.h"
 #include "dictbase.h"
 #include "stardict.h"
@@ -11,7 +11,8 @@
 
 
 //#define DEBUG_DICT
-#define DEBUG_RHISTFILE
+//#define DEBUG_RHISTFILE
+#define DEBUG_RINIFILE
 
 int main(int argc, char** argv) {
 #ifdef DEBUG_DICT
@@ -38,6 +39,21 @@ int main(int argc, char** argv) {
 	string line = argv[2];
 	file->write(line);
 	file->close();
+#endif
+#ifdef DEBUG_RINIFILE
+	RIniFile *file = new RIniFile("/home/raiden/test.ini");
+	//file->setValue("testkey1","value1");
+	//file->setValue("testkey2",2);
+	//file->save();
+	/*vector<string> keys = file->getKeys();
+	for (int i = 0; i < keys.size(); ++i) {
+		string key = keys.at(i);
+		printf("key[%d] : %s\n",i,key.c_str());
+	}*/
+	//printf("value : %s\n",file->getValue("testkey1").c_str());
+	//file->remove("testkey1");
+	//file->save();
+	delete file;
 #endif
 	//argvsAnalyse(argc,argv);
 	return 0;

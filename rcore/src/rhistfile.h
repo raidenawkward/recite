@@ -79,23 +79,24 @@ public:
 	RIniFile(const string file);
 	virtual ~RIniFile();
 
-	// 'false' would be return if arg is not found in ini
+	// 'false' would be return if key is not found in ini
 	// then new item would be created
-	bool setValue(const string arg, const string value);
-	bool setValue(const string arg, int value);
+	bool setValue(const string key, const string value);
+	bool setValue(const string key, int value);
+	string remove(const string key);//< value will be returned;
+	string remove(int index);
 
-	string getValue(const string arg);
-	vector<string> getArgs();
-	bool getNext(string& arg, string& value);
+	string getValue(const string key);
+	vector<string> getKeys();
 
-	int getRecirdCount();
+	int getRecordCount();
 	bool save();
 
 protected:
-	bool parseLine(const string line, string& arg, string& value);
+	bool parseLine(const string line, string& key, string& value);
 	int loadRecord();
 protected:
-	vector <pair<string,string > > _record;
+	vector<pair<string,string > > _record;
 };
 
 #endif // RFILEWRITTER_H
