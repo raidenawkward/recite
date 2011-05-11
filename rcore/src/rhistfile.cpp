@@ -91,7 +91,8 @@ rfile_error_t RHistFile::readLine(string &line, int lineSize) {
 		return RERR_CANNOTREAD;
 	char ret[lineSize];
 	memset(ret,0x00,lineSize);
-	_stream->getline(ret,lineSize);
+	if (!_stream->getline(ret,lineSize))
+		return RERR_CANNOTREAD;
 	line = string(ret);
 	return RERR_OK;
 }
@@ -134,3 +135,92 @@ int RHistFile::getStreamMode(ropen_mode_t mode) {
 	}
 	return ret;
 }
+
+
+
+//////////////////// class RIniFile /////////////////////
+
+#define RINIFILE_CHAR_EQ '='
+#define RINIFILE_CHAR_SP ' '
+
+RIniFile::RIniFile(const string file)
+		:RHistFile(file)
+{
+	this->open(ROPENMODE_READWRITE);
+}
+
+RIniFile::~RIniFile() {
+	close();
+}
+
+string peel_first_word(string& str) {
+	string ret;
+	if (str.empty())
+			return ret;
+	while (str.length()) {
+		char ch = str[0];
+		str.erase(0,1);
+		if (ch == RINIFILE_CHAR_SP) {
+			while (str[0] == RINIFILE_CHAR_SP) {
+				str.erase(0,1);
+			}
+			return ret;
+		} else if (ch == RINIFILE_CHAR_EQ) {
+			ret += ch;
+			return ret;
+		} else {
+			ret += ch;
+			if (str[0] == RINIFILE_CHAR_EQ)
+			return ret;
+		}                       
+	}
+	return ret;
+}
+
+void peel_str_bothsides_quotesmark(string& str) {
+	int length = str.length();
+	if ((str[0] == '\"' && str[length - 1] == '\"')
+		|| (str[0] == '\'' && str[length - 1] == '\'')) {
+			str.erase(length - 1,1);
+			str.erase(0,1);
+	}
+}
+
+bool RIniFile::parseLine(const string line, string& arg, string& value) {
+	bool ret = false;
+	if (line.empty())
+		return ret;
+
+	string line_to_parse = line;
+	// get arg
+	arg = peel_first_word(line_to_parse);
+	// get 'equal'
+	peel_first_word(line_to_parse);
+	// get value
+	value = peel_first_word(line_to_parse);
+	peel_str_bothsides_quotesmark(value);
+	if (arg.empty() || value.empty()) {
+		arg.clear();
+		value.clear();
+		return ret;
+	}
+	ret = true;
+	return ret;
+}
+
+int RIniFile::loadRecord() {
+	string line;
+
+	while (readLine(line)) {
+		string arg;
+		string value;
+		if (parseLine(line,arg,value)) {
+			pair<string,string> recordLine(arg,value);
+			_record.insert(recordLine);
+		}
+	}
+
+	close();
+	return _record.size();
+}
+

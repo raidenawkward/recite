@@ -6,6 +6,7 @@
 #include <string.h>
 #include <string>
 #include <fstream>
+#include <vector>
 
 using namespace std;
 
@@ -47,7 +48,7 @@ class RHistFile
 public:
 	RHistFile();
 	RHistFile(const string file);
-	~RHistFile();
+	virtual ~RHistFile();
 
 	rfile_error_t open(ropen_mode_t mode = ROPENMODE_READ);
 	rfile_error_t open(const string file, ropen_mode_t mode = ROPENMODE_READ);
@@ -70,6 +71,31 @@ private:
 	string _path;
 	ropen_mode_t _mode;
 	fstream *_stream;
+};
+
+class RIniFile : public RHistFile
+{
+public:
+	RIniFile(const string file);
+	virtual ~RIniFile();
+
+	// 'false' would be return if arg is not found in ini
+	// then new item would be created
+	bool setValue(const string arg, const string value);
+	bool setValue(const string arg, int value);
+
+	string getValue(const string arg);
+	vector<string> getArgs();
+	bool getNext(string& arg, string& value);
+
+	int getRecirdCount();
+	bool save();
+
+protected:
+	bool parseLine(const string line, string& arg, string& value);
+	int loadRecord();
+protected:
+	vector <pair<string,string > > _record;
 };
 
 #endif // RFILEWRITTER_H
