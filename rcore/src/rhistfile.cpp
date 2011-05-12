@@ -224,6 +224,16 @@ string RIniFile::getValue(const string key) {
 	return ret;
 }
 
+string RIniFile::getValue(int index,string &key) {
+	string ret;
+	if (index < 0 || index > _record.size())
+		return ret;
+	pair<string,string> item = _record.at(index);
+	ret = item.second;
+	key = item.first;
+	return ret;
+}
+
 vector<string> RIniFile::getKeys() {
 	vector<string> ret;
 	for (int i = 0; i < _record.size(); ++i) {

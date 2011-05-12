@@ -6,6 +6,7 @@ set (RCORE_SOURCES
 	src/rrecord.cpp
 	src/rhistfile.cpp
 	src/rcoding.cpp
+	src/rprop.cpp
 )
 
 INCLUDE_DIRECTORIES(

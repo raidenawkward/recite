@@ -87,6 +87,8 @@ public:
 	string remove(int index);
 
 	string getValue(const string key);
+	string getValue(int index, string& key);
+
 	vector<string> getKeys();
 
 	int getRecordCount();
