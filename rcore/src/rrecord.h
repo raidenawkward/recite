@@ -60,8 +60,8 @@ public:
 	void setDictName(const string dictName);
 	string getDictName();
 
-	void setStartDict(const string date);
-	string getStartDate();
+	void setDictStartDate(const string date);
+	string getDictStartDate();
 
 private:
 	DictBase *_dict;
@@ -70,6 +70,7 @@ private:
 class UserRecord : public RecordBase
 {
 public:
+	UserRecord();
 	UserRecord(const string path);
 	UserRecord(RIniFile* ini);
 	~UserRecord();
@@ -78,7 +79,7 @@ public:
 	string getUserName();
 
 	void setMail(const string mail);
-	string getUserMail();
+	string getMail();
 
 	void setRegistDate(const string date);
 	string getRegistDate();
