@@ -10,10 +10,6 @@
 #define DEFAULT_DICT_PATH "dictsupport/dict/stardict-langdao-ec-gb-2.4.2/"
 
 
-//#define DEBUG_DICT
-//#define DEBUG_RHISTFILE
-//#define DEBUG_RINIFILE
-#define DEBUG_RPROP
 void test_rprop() {
 	RPropSet *set = new RPropSet;
 	RPropItem item1("key1","value1");
@@ -70,6 +66,19 @@ void test_inifile() {
 	delete file;
 }
 
+void test_md5() {
+	printf("md5 : %s\n",get_md5_str("abcde"));
+	printf("md5 : %s\n",get_md5_str("abcde"));
+	printf("md5 : %s\n",get_md5_file("/home/test.ini"));
+	printf("md5 : %s\n",string(get_md5_file("/home/test.ini")).c_str());
+}
+
+//#define DEBUG_DICT
+//#define DEBUG_RHISTFILE
+//#define DEBUG_RINIFILE
+//#define DEBUG_RPROP
+#define DEBUG_MD5
+
 int main(int argc, char** argv) {
 #ifdef DEBUG_DICT
 	test_dict(argc,argv);
@@ -83,6 +92,9 @@ int main(int argc, char** argv) {
 #endif
 #ifdef DEBUG_RPROP
 	test_rprop();
+#endif
+#ifdef DEBUG_MD5
+	test_md5();
 #endif
 	//argvsAnalyse(argc,argv);
 	return 0;

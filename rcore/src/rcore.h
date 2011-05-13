@@ -9,6 +9,7 @@
 #include "rprop.h"
 #include "dictbase.h"
 #include "stardict.h"
+#include "md5.h"
 
 using namespace std;
 
