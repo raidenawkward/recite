@@ -12,10 +12,23 @@
 
 //#define DEBUG_DICT
 //#define DEBUG_RHISTFILE
-#define DEBUG_RINIFILE
+//#define DEBUG_RINIFILE
+#define DEBUG_RPROP
+void test_rprop() {
+	RPropSet *set = new RPropSet;
+	RPropItem item1("key1","value1");
+	RPropItem item2("key2",222);
+	set->addItem(item1);
+	set->addItem(item2);
+	set->traverse();
+	//set->remove("key1");
+	//set->traverse();
+	RIniFile *ini = new RIniFile("/home/test.ini");
+	if (!set->saveToIni(ini))
+		printf("cannot save !!\n");
+}
 
-int main(int argc, char** argv) {
-#ifdef DEBUG_DICT
+void test_dict(int argc, char** argv) {
 	RCore *core = new RCore();
 	if (!core->loadDict(DEFAULT_DICT_PATH)) {
 		printf("error  when loading dict\n");
@@ -25,9 +38,9 @@ int main(int argc, char** argv) {
 		printf("checking word \'%s\'\n",argv[i]);
 		printf("%s\n",core->lookUpWord(argv[i]).c_str());
 	}
-#endif
+}
 
-#ifdef DEBUG_RHISTFILE
+void test_histfile(int argc, char** argv) {
 	RHistFile *file = new RHistFile("/home/test.test");
 	file->open(ROPENMODE_WRITE);
 	/*for (int i = 1; i < argc; ++i) {
@@ -39,8 +52,9 @@ int main(int argc, char** argv) {
 	string line = argv[2];
 	file->write(line);
 	file->close();
-#endif
-#ifdef DEBUG_RINIFILE
+}
+
+void test_inifile() {
 	RIniFile *file = new RIniFile("/home/raiden/test.ini");
 	//file->setValue("testkey1","value1");
 	//file->setValue("testkey2",2);
@@ -54,6 +68,21 @@ int main(int argc, char** argv) {
 	//file->remove("testkey1");
 	//file->save();
 	delete file;
+}
+
+int main(int argc, char** argv) {
+#ifdef DEBUG_DICT
+	test_dict(argc,argv);
+#endif
+
+#ifdef DEBUG_RHISTFILE
+	test_histfile(argc,argv);
+#endif
+#ifdef DEBUG_RINIFILE
+	test_inifile();
+#endif
+#ifdef DEBUG_RPROP
+	test_rprop();
 #endif
 	//argvsAnalyse(argc,argv);
 	return 0;

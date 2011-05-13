@@ -27,22 +27,31 @@ public:
 class RPropSet : public vector<RPropItem>
 {
 public:
-	RPropSet() {}
+	RPropSet();
 	RPropSet(RIniFile *file);
 
-	bool addItem(RPropItem &item);
+	bool addItem(RPropItem &item); //< false would be returned if no item found
 	RPropItem getItem(const string key);
 	RPropItem getItem(int index);
 
 	bool setValue(const string key,const string value);
 	bool setValue(const string key,int value);
+	bool remove(const string key);
+	bool remove(int index);
 
 	string getStr(const string key);
 	int getInt(const string key);
+	int getIndex(const string key);//< -1 returns if not found
 
-	int getIndex(const string key);
+	bool saveToIni();
+	bool saveToIni(RIniFile *file);
+	void traverse();
+
 protected:
 	void loadFromIni(RIniFile* file);
+
+protected:
+	RIniFile *_ini;
 };
 
 #endif // RPROP_H

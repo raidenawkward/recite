@@ -271,6 +271,10 @@ bool RIniFile::save() {
 	return true;
 }
 
+void RIniFile::clear() {
+	_record.clear();
+}
+
 string peel_first_word(string& str) {
 	string ret;
 	if (str.empty())

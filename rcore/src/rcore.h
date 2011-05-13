@@ -6,6 +6,7 @@
 #include <stdlib.h>
 #include <string>
 #include "rhistfile.h"
+#include "rprop.h"
 #include "dictbase.h"
 #include "stardict.h"
 

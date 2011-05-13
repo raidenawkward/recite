@@ -39,7 +39,12 @@ void RPropItem::setValue(int value) {
 ///////////////////////// class RPropSet ///////////////////////////
 
 
-RPropSet::RPropSet(RIniFile *file) {
+RPropSet::RPropSet()
+		:_ini(NULL) {
+}
+
+RPropSet::RPropSet(RIniFile *file)
+		:_ini(file) {
 	loadFromIni(file);
 }
 
@@ -88,7 +93,7 @@ RPropItem RPropSet::getItem(const string key) {
 
 RPropItem RPropSet::getItem(int index) {
 	RPropItem empty;
-	if (index < 0 || index > this->size())
+	if (index < 0 || index >= this->size())
 		return empty;
 	RPropItem item = this->at(index);
 	return item;
@@ -104,6 +109,18 @@ bool RPropSet::setValue(const string key, int value) {
 	return addItem(item);
 }
 
+bool RPropSet::remove(const string key) {
+	int index = getIndex(key);
+	return remove(index);
+}
+
+bool RPropSet::remove(int index) {
+	if (index < 0 || index >= this->size())
+		return false;
+	this->erase(this->begin() + index);
+	return true;
+}
+
 string RPropSet::getStr(const string key) {
 	return getItem(key).value();
 }
@@ -111,4 +128,26 @@ string RPropSet::getStr(const string key) {
 int RPropSet::getInt(const string key) {
 	string sret = getItem(key).value();
 	return atoi(sret.c_str());
+}
+
+bool RPropSet::saveToIni() {
+	return saveToIni(_ini);
+}
+
+bool RPropSet::saveToIni(RIniFile *ini) {
+	if (!ini)
+		return false;
+	ini->clear();
+	for (int i = 0; i < this->size(); ++i) {
+		RPropItem item = this->at(i);
+		ini->setValue(item.prop(),item.value());
+	}
+	return ini->save();
+}
+
+void RPropSet::traverse() {
+	for (int i = 0; i < this->size(); ++i) {
+		RPropItem item = this->at(i);
+		printf("item %d : %s = %s\n",i,item.prop().c_str(),item.value().c_str());
+	}
 }

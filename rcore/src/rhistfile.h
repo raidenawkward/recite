@@ -93,6 +93,7 @@ public:
 
 	int getRecordCount();
 	bool save();
+	void clear();
 
 protected:
 	bool parseLine(const string line, string& key, string& value);
