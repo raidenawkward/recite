@@ -237,7 +237,7 @@ void md5_final(void *ctx, u8 *out)
 char* get_md5_str(const char* str) {
 	int length = strlen(str);
 	char* buf = (char*)malloc(sizeof(char)*length);
-	char* ret = (char*)malloc(sizeof(char)*LEN_MD5_STR);
+	unsigned char* ret = (unsigned char*)malloc(sizeof(unsigned char)*LEN_MD5_STR);
 	memset(ret,0x00,LEN_MD5_STR);
 	strcpy(buf,str);
 	void *ptr = create_md5_ctx();
