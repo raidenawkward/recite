@@ -89,12 +89,17 @@ void test_rtime() {
 		printf("time 3 is NOT bigger than time 2\n");
 	if (time == time2)
 		printf("time is the same as time 2\n");
-	time_t t = 100;
-	char str[64];
-	memset(str,0x00,64);
-    strftime(str,64,"%d",localtime(&t));
-    int sec = atoi(str);
-	printf("second : %d\n",sec);
+
+	RDate date(time);
+	RDate date2;
+
+	printf("date : %s\n",date.getDateSerialString().c_str());
+	printf("date2 : %s\n",date2.getDateSerialString().c_str());
+
+	if (date2 > date)
+		printf("date 2 is bigger than date\n");
+	else
+		printf("date 2 is NOT bigger than date\n");
 }
 
 //#define DEBUG_DICT

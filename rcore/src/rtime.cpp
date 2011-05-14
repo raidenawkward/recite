@@ -57,6 +57,13 @@ time_t RTime::getStamp() {
 	return _stamp;
 }
 
+string RTime::getStampString() {
+	char str[64];
+	memset(str,0x00,64);
+	sprintf(str,"%l",_stamp);
+	return string(str);
+}
+
 int RTime::getYear() {
 	return _year;
 }
@@ -100,6 +107,14 @@ bool RTime::operator < (RTime& time) {
 	return (_stamp < time.getStamp());
 }
 
+bool RTime::operator >= (RTime& time) {
+	return (_stamp >= time.getStamp());
+}
+
+bool RTime::operator <= (RTime& time) {
+	return (_stamp <= time.getStamp());
+}
+
 bool RTime::operator == (RTime& time) {
 	return (_stamp == time.getStamp());
 }
@@ -111,4 +126,106 @@ bool RTime::operator != (RTime& time) {
 RTime& RTime::operator = (RTime& time) {
 	setStamp(time.getStamp());
 	return *this;
+}
+
+
+
+
+////////////////////////////// class RDate ///////////////////////////////
+
+
+RDate::RDate()
+		:RTime() {
+}
+
+RDate::RDate(time_t stamp)
+		:RTime(stamp) {
+}
+
+RDate::RDate(RDate& date)
+		:RTime(date.getStamp()) {
+}
+
+RDate::RDate(RTime& time)
+		:RTime(time) {
+}
+
+RDate::~RDate() {
+};
+
+RTime RDate::getTime() {
+	RTime time(_stamp);
+	return time;
+}
+
+bool RDate::operator > (RDate& date) {
+	bool ret = true;
+	if (_year > date.getYear())
+		return ret;
+	else if (_year < date.getYear())
+		return !ret;
+
+	if (_month > date.getMonth())
+		return ret;
+	else if (_month < date.getMonth())
+		return !ret;
+
+	if (_day > date.getDay())
+		return ret;
+	else if (_day < date.getDay())
+		return !ret;
+
+	return !ret;
+}
+
+bool RDate::operator < (RDate& date) {
+	bool ret = true;
+	if (_year < date.getYear())
+		return ret;
+	else if (_year > date.getYear())
+		return !ret;
+
+	if (_month < date.getMonth())
+		return ret;
+	else if (_month > date.getMonth())
+		return !ret;
+
+	if (_day < date.getDay())
+		return ret;
+	else if (_day > date.getDay())
+		return !ret;
+
+	return !ret;
+}
+
+bool RDate::operator >= (RDate& date) {
+	return !(*this < date);
+}
+
+bool RDate::operator <= (RDate& date) {
+	return !(*this > date);
+}
+
+bool RDate::operator == (RDate& date) {
+	return (*this <= date && *this >= date);
+}
+
+bool RDate::operator != (RDate& date) {
+	return !(*this == date);
+}
+
+RDate& RDate::operator = (RDate& date) {
+	setStamp(date.getStamp());
+	return *this;
+}
+
+string RDate::getDateSerialString() {
+	char tmp[64];
+	memset(tmp,0x00,64);
+	sprintf(tmp,"%d%d%d",_year,_month,_day);
+	return string(tmp);
+}
+
+long RDate::getDateSerial() {
+	return atol(getDateSerialString().c_str());
 }

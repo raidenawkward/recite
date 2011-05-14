@@ -26,14 +26,17 @@ public:
 
 	void setStamp(time_t stamp);
 	time_t getStamp();
+	string getStampString();
 
-	string getTimeSerialString();// "20110514"
-	long getTimeSerial();// 20110514
+	string getTimeSerialString();// "20110514103055"
+	long getTimeSerial();// 20110514153055
 
-	bool operator > (RTime& time);
-	bool operator < (RTime& time);
-	bool operator == (RTime& time);
-	bool operator != (RTime& time);
+	virtual bool operator > (RTime& time);
+	virtual bool operator < (RTime& time);
+	virtual bool operator >= (RTime& time);
+	virtual bool operator <= (RTime& time);
+	virtual bool operator == (RTime& time);
+	virtual bool operator != (RTime& time);
 
 	RTime& operator = (RTime& time);
 
@@ -50,5 +53,30 @@ protected:
 	time_t _stamp;
 };
 
+
+
+class RDate : public RTime
+{
+public:
+	RDate();
+	RDate(time_t stamp);
+	RDate(RDate& date);
+	RDate(RTime& time);
+	~RDate();
+
+	RTime getTime();
+
+	virtual bool operator > (RDate& time);
+	virtual bool operator < (RDate& time);
+	virtual bool operator >= (RDate& time);
+	virtual bool operator <= (RDate& time);
+	virtual bool operator == (RDate& time);
+	virtual bool operator != (RDate& time);
+
+	RDate& operator = (RDate& time);
+
+	string getDateSerialString();// "20110514"
+	long getDateSerial();// 20110514
+};
 
 #endif // RTIME_H
