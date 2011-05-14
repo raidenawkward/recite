@@ -73,11 +73,36 @@ void test_md5() {
 	printf("md5 : %s\n",string(get_md5_file("/home/test.ini")).c_str());
 }
 
+void test_rtime() {
+	RTime time(100);
+	printf("time : %s\n",time.getTimeSerialString().c_str());
+
+	sleep(2);
+	RTime time2 = time;
+	printf("time2 : %s\n",time2.getTimeSerialString().c_str());
+	sleep(3);
+	RTime time3;
+	printf("time3 : %s\n",time3.getTimeSerialString().c_str());
+	if (time3 > time2)
+		printf("time 3 is bigger than time 2\n");
+	else
+		printf("time 3 is NOT bigger than time 2\n");
+	if (time == time2)
+		printf("time is the same as time 2\n");
+	time_t t = 100;
+	char str[64];
+	memset(str,0x00,64);
+    strftime(str,64,"%d",localtime(&t));
+    int sec = atoi(str);
+	printf("second : %d\n",sec);
+}
+
 //#define DEBUG_DICT
 //#define DEBUG_RHISTFILE
 //#define DEBUG_RINIFILE
 //#define DEBUG_RPROP
-#define DEBUG_MD5
+//#define DEBUG_MD5
+#define DEBUG_RTIME
 
 int main(int argc, char** argv) {
 #ifdef DEBUG_DICT
@@ -95,6 +120,9 @@ int main(int argc, char** argv) {
 #endif
 #ifdef DEBUG_MD5
 	test_md5();
+#endif
+#ifdef DEBUG_RTIME
+	test_rtime();
 #endif
 	//argvsAnalyse(argc,argv);
 	return 0;

@@ -10,6 +10,7 @@
 #include "dictbase.h"
 #include "stardict.h"
 #include "md5.h"
+#include "rtime.h"
 
 using namespace std;
 

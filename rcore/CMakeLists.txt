@@ -7,6 +7,7 @@ set (RCORE_SOURCES
 	src/rhistfile.cpp
 	src/rcoding.cpp
 	src/rprop.cpp
+	src/rtime.cpp
 	src/md5.c
 )
 
