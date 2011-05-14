@@ -2,13 +2,14 @@
 #define CHECKCMD_H
 
 #include "rcmd.h"
+#include "rui.h"
 
 class CheckCMD : public RCMD
 {
 public:
 	CheckCMD(int argc, char** argv);
 	CheckCMD(CheckCMD& cmd);
-	CheckCMD(RParamList& cmd);
+	CheckCMD(RParamList& params);
 	~CheckCMD();
 
 	virtual void exec(RCore* core);

@@ -9,39 +9,23 @@
 
 using namespace std;
 
-enum RECITE_CMD {
-	// user
-	RECITE_CMD_SHOWCURRENTUSER,
-	RECITE_CMD_CHANGECURRENTUSER,
-	RECITE_CMD_SETUSERPASSWD,
-	// show word
-	RECITE_CMD_LOOKUPWORD,
-	RECITE_CMD_SHOWWORDSTODAY,
-	RECITE_CMD_SHOWNEXTWORDTODAY,
-	RECITE_CMD_SHOWPREVWORDTODAY,
-	// recite option
-	RECITE_CMD_SETWORDSPERDAY,
-	RECITE_CMD_SETDICT,
-	RECITE_CMD_SHOWDICTINFO,
-	// for reciting
-	RECITE_CMD_ADDFORGETIVEWORD,
-	RECITE_CMD_ADDEXTERNALNEWWORD,
-	RECITE_CMD_CHECKWORDSRECITEDBEFORE,
-	//
-	RECITE_CMD_INVALID
+#include "define.h"
+
+enum RTYPE_CMD {
+	RTYPE_CMD_USER,//< user cmd
+	RTYPE_CMD_LOOKUPWORD,//< checking cmd
+	RTYPE_CMD_DICT,	//< recite option
+	RTYPE_CMD_INVALID
 };
 
-/*int getCMDArguNum(RECITE_CMD cmd, int argc, char** argv) {
 
-}*/
+RTYPE_CMD get_cmd(int argc, char** argv);
 
-void argvsAnalyse(int argc, char** argv);
-void doCommand( const char* cmd, const char* param,...);
-bool doCmd(const char* cmd, const char* param);
-bool isCommandNeedParam(const char* cmd);
-void commandError(const char* cmd);
+// returns true if src is heading parts of dst on case sensitivly
+bool str_compair_partly(const string src, const string dst);
 
+string get_cmd_str(int argc, char** argv);
 
-
+//void argvsAnalyse(int argc, char** argv);
 
 #endif // CMD_H

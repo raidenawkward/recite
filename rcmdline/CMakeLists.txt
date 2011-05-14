@@ -13,6 +13,7 @@ SET (CMDLINE_SOURCES
 	src/cmds.cpp
 	src/rcmd.cpp
 	src/rconsole.cpp
+	src/rui.cpp
 	src/usercmd.cpp
 	src/dictcmd.cpp
 	src/checkcmd.cpp

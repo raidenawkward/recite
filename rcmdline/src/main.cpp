@@ -2,7 +2,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include <vector>
-#include "rcore.h"
+
+#include "rconsole.h"
 #include "dictbase.h"
 #include "stardict.h"
 
@@ -107,7 +108,7 @@ void test_rtime() {
 //#define DEBUG_RINIFILE
 //#define DEBUG_RPROP
 //#define DEBUG_MD5
-#define DEBUG_RTIME
+//#define DEBUG_RTIME
 
 int main(int argc, char** argv) {
 #ifdef DEBUG_DICT
@@ -129,7 +130,7 @@ int main(int argc, char** argv) {
 #ifdef DEBUG_RTIME
 	test_rtime();
 #endif
-	//argvsAnalyse(argc,argv);
-	return 0;
+	RConsole console(argc,argv);
+	return console.exec();
 }
 
