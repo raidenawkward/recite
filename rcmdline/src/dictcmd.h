@@ -12,7 +12,7 @@ public:
 	DictCMD(RParamList& cmd);
 	~DictCMD();
 
-	virtual void exec(RCore* core);
+	virtual void exec(RCore* core, RUI* ui);
 };
 
 

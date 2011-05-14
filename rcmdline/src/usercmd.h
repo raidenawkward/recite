@@ -11,7 +11,7 @@ public:
 	UserCMD(RParamList& cmd);
 	~UserCMD();
 
-	virtual void exec(RCore* core);
+	virtual void exec(RCore* core, RUI* ui);
 };
 
 

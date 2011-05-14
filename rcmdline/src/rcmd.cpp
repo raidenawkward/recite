@@ -51,7 +51,7 @@ int RParamList::indexOf(const string param) {
 string RParamList::at(int index) {
 	if (index < 0 || index > this->size())
 		return string();
-	return this->at(index);
+	return vector<string>::at(index);
 }
 
 int RParamList::count() {

@@ -15,15 +15,18 @@ CheckCMD::CheckCMD(RParamList& params)
 CheckCMD::~CheckCMD() {
 }
 
-void CheckCMD::exec(RCore* core) {
+void CheckCMD::exec(RCore* core, RUI* ui) {
 	if (!core)
 		return;
 	if (!core->isDictValid()) {
-		RUI::show_warning(MSG_CMD_CHECK_NODICT);
+		ui->show_warning(MSG_CMD_CHECK_NODICT);
 	}
 	for (int i = 0; i < _paramList.count(); ++i) {
 		string word = _paramList.at(i);
-		if (word[0] != '-')
-			RUI::show_check_result(core->lookUpWord(word.c_str()));
+		if (word[0] != '-') {
+			if (i > 0)
+				ui->show_check_result_spliter();
+			ui->show_check_result(core->lookUpWord(word.c_str()));
+		}
 	}
 }

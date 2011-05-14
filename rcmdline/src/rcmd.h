@@ -11,6 +11,7 @@ using namespace std;
 
 #include "cmds.h"
 #include "rcore.h"
+#include "rui.h"
 
 class RParamList : public vector<string>
 {
@@ -35,7 +36,7 @@ public:
 	virtual ~RCMD();
 
 	RParamList& getParamList();
-	virtual void exec(RCore* core) = 0;
+	virtual void exec(RCore* core, RUI* ui) = 0;
 
 protected:
 	virtual int loadArgv(int argc,char** argv);

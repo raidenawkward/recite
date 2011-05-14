@@ -2,7 +2,6 @@
 #define CHECKCMD_H
 
 #include "rcmd.h"
-#include "rui.h"
 
 class CheckCMD : public RCMD
 {
@@ -12,7 +11,7 @@ public:
 	CheckCMD(RParamList& params);
 	~CheckCMD();
 
-	virtual void exec(RCore* core);
+	virtual void exec(RCore* core,RUI* ui);
 };
 
 
