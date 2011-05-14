@@ -11,6 +11,8 @@
 #include "stardict.h"
 #include "md5.h"
 #include "rtime.h"
+#include "rrecord.h"
+#include "defines.h"
 
 using namespace std;
 
@@ -24,6 +26,8 @@ class RCore
 public:
 	RCore();
 	~RCore();
+
+	static DictType checkDictType(const string path);
 
 	bool loadDict(const string dict);
 	bool loadDict(const char* dict);
@@ -46,9 +50,27 @@ public:
 	string getDictTypeStr();
 	void clearDict();
 
+	bool loadRecords();//< default record file
+	bool loadRecords(const string path);//< dict, user...
+
+	bool saveRecords();
+	bool saveRCoreRecord();
+	bool saveUserRecord();
+	bool saveDictRecord();
+
+protected:
+	bool loadRCoreRecord(const string path);
+	bool loadUserRecord(const string path);
+	bool loadDictRecord(const string path);
+
 private:
 	DictBase *_dict;
 	DictType _dictType;
+
+	string _rcoreRecorePath;
+	RCoreRecord* _rcoreRecord;
+	UserRecord* _userRecord;
+	DictRecord* _dictRecord;
 };
 
 

@@ -19,7 +19,7 @@ RTYPE_CMD get_cmd(int argc, char** argv) {
 		return RTYPE_CMD_USER;
 	}
 
-	return RTYPE_CMD_INVALID;
+	return RTYPE_CMD_UNKNOWN;
 }
 
 string get_cmd_str(int argc, char** argv) {

@@ -11,8 +11,8 @@
 
 // messages
 // warnnings
-#define MSG_CMD_CHECK_NODICT "warnning : no dict input"
-
+#define MSG_CMD_CHECK_NODICT "no dict input"
+#define MSG_CMD_UNKNOWN "unknow parameter"
 
 // cmds
 //
@@ -25,7 +25,8 @@ enum RERROR {
 	RERROR_NOERROR,
 	RERROR_INIT_FAILED,
 	RERROR_EXEC_FAILED,
-	RERROR_TOO_FEW_PARAMS
+	RERROR_TOO_FEW_PARAMS,
+	RERROR_UNKNOWN_PARAM,
 };
 
 #endif //CONSOLE_DEFINE_H

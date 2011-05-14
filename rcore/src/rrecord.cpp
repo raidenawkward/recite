@@ -66,7 +66,7 @@ bool RecordBase::save(RIniFile* ini) {
 
 
 
-//////////////////////  class DictRecord ////////////////////////
+///////////////////////  class DictRecord ////////////////////////
 
 
 
@@ -83,6 +83,9 @@ DictRecord::DictRecord(const string path)
 DictRecord::DictRecord(RIniFile* ini)
 			:RecordBase(ini) {
 
+}
+
+DictRecord::~DictRecord() {
 }
 
 void DictRecord::setDict(DictBase* dict) {
@@ -162,7 +165,7 @@ string DictRecord::getDictStartDate() {
 
 
 
-//////////////////////  class UserRecord ////////////////////////
+///////////////////////  class UserRecord ////////////////////////
 
 
 UserRecord::UserRecord()
@@ -217,4 +220,61 @@ string UserRecord::getRegistDate() {
 	if (!_record)
 		return string();
 	_record->getStr(INI_KEY_USER_REGISTDATE);
+}
+
+void UserRecord::setCurrentDict(const string path) {
+	if (!_record)
+		return;
+	_record->setValue(INI_KEY_USER_CURRENTDICT,path);
+}
+
+string UserRecord::getCurrentDict() {
+	if (!_record)
+		return string();
+	return _record->getStr(INI_KEY_USER_CURRENTDICT);
+}
+
+
+///////////////////////  class RCoreRecord ////////////////////////
+
+
+RCoreRecord::RCoreRecord()
+			:RecordBase() {
+
+}
+
+RCoreRecord::RCoreRecord(const string path)
+			:RecordBase(path) {
+}
+
+RCoreRecord::RCoreRecord(RIniFile* ini)
+			:RecordBase(ini) {
+}
+
+RCoreRecord::~RCoreRecord() {
+
+}
+
+void RCoreRecord::setUserRecordDir(const string dir) {
+	if (!_record)
+		return;
+	_record->setValue(INI_KEY_RCORE_USERDIR,dir);
+}
+
+string RCoreRecord::getUserRecordDir() {
+	if (!_record)
+		return string();
+	return _record->getStr(INI_KEY_RCORE_USERDIR);
+}
+
+void RCoreRecord::setCurrentUser(const string user) {
+	if (!_record)
+		return;
+	_record->setValue(INI_KEY_RCORE_CURRENT_USER,user);
+}
+
+string RCoreRecord::getCurrentUser() {
+	if (!_record)
+		return string();
+	return _record->getStr(INI_KEY_RCORE_CURRENT_USER);
 }

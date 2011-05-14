@@ -15,6 +15,7 @@ enum RTYPE_CMD {
 	RTYPE_CMD_USER,//< user cmd
 	RTYPE_CMD_LOOKUPWORD,//< checking cmd
 	RTYPE_CMD_DICT,	//< recite option
+	RTYPE_CMD_UNKNOWN,
 	RTYPE_CMD_INVALID
 };
 

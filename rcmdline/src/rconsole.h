@@ -35,6 +35,7 @@ public:
 
 	void setUI(RUI* ui) { _rui = ui; }
 	RUI* ui();
+	bool saveRecords();//< careful : it saves all records!
 
 	RERROR getError() { return _error; }
 	void setError(RERROR error) { _error = error; }
@@ -46,8 +47,6 @@ private:
 	int _argc;
 	char** _argv;
 
-	DictRecord* _dictRecord;
-	UserRecord* _userRecord;
 	RUI* _rui;
 };
 

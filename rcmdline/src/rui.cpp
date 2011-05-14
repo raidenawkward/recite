@@ -6,7 +6,11 @@ RUI::RUI()
 }
 
 void RUI::show_warning(const string warning) {
-	cout<<warning<<endl;
+	cout<<"warnning : "<<warning<<endl;
+}
+
+void RUI::show_error(const string error) {
+	cout<<"error : "<<error<<endl;
 }
 
 void RUI::show_check_result(const string result) {

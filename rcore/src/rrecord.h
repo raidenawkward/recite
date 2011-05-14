@@ -83,8 +83,25 @@ public:
 
 	void setRegistDate(const string date);
 	string getRegistDate();
+
+	void setCurrentDict(const string path);
+	string getCurrentDict();
 };
 
+class RCoreRecord : public RecordBase
+{
+public:
+	RCoreRecord();
+	RCoreRecord(const string path);
+	RCoreRecord(RIniFile* ini);
+	~RCoreRecord();
+
+	void setUserRecordDir(const string dir);
+	string getUserRecordDir();
+
+	void setCurrentUser(const string user);
+	string getCurrentUser();
+};
 
 
 #endif // RRECORD_H

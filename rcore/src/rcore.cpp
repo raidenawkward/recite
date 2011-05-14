@@ -2,6 +2,9 @@
 
 RCore::RCore()
 	:_dict(NULL)
+	,_rcoreRecord(NULL)
+	,_dictRecord(NULL)
+	,_userRecord(NULL)
 	,_dictType(DICTTYPE_INVALID)
 {
 }
@@ -10,22 +13,32 @@ RCore::~RCore() {
 	clearDict();
 }
 
+DictType RCore::checkDictType(const string path) {
+	return DICTTYPE_STARDICT;
+}
+
 bool RCore::loadDict(const string dict) {
 	clearDict();
 
 	// star dict checking
-	if (!_dict) {
-		StarDict *stardict = new StarDict();
-		if (stardict->setDict(dict)) {
-			if (stardict->isDictValid()) {
-				_dict = stardict;
-				setDictType(DICTTYPE_STARDICT);
+	DictType type = checkDictType(dict);
+	switch (type) {
+		case DICTTYPE_STARDICT:
+		{
+			StarDict *stardict = new StarDict();
+			if (stardict->setDict(dict)) {
+				if (stardict->isDictValid()) {
+					setDictType(type);
+					return loadDict(stardict);
+				}
 			}
 		}
-	}
-	// other dict checking
-	// if (!_dict) { }
-	return (_dict != NULL);
+		break;
+		case DICTTYPE_INVALID:
+		default:
+		break;
+	}// switch
+	return false;
 }
 
 bool RCore::loadDict(const char* dict) {
@@ -41,6 +54,11 @@ bool RCore::loadDict(DictBase *dict) {
 		return false;
 	clearDict();
 	_dict = dict;
+	if (_dictRecord) {
+		_dictRecord->setDictPath(_dict->getDictPath());
+		_dictRecord->setDictName(_dict->getDictName());
+		_dictRecord->setDictWordCount(_dict->getWordCount());
+	}
 	return true;
 }
 
@@ -124,4 +142,84 @@ void RCore::clearDict() {
 	if (_dict)
 		delete _dict;
 	_dict = NULL;
+}
+
+bool RCore::loadRecords() {
+	return loadRecords(RECORD_CORE_PATH);
+}
+
+bool RCore::loadRecords(const string path) {
+	bool ret = false;
+	if (path.empty())
+		return ret;
+	if (!loadRCoreRecord(path))
+		return ret;
+
+	string user_record_path = _rcoreRecord->getUserRecordDir() + _rcoreRecord->getCurrentUser();
+#ifdef WIN32
+	user_record_path += "\\user.ini";
+#else
+	user_record_path += "/user.ini";
+#endif
+	if (!loadUserRecord(user_record_path))
+		return ret;
+
+	string dict_record_path = _userRecord->getCurrentDict();
+	if (!loadDictRecord(dict_record_path))
+		return ret;
+
+	return true;
+};
+
+bool RCore::saveRecords() {
+	bool ret = true;
+	if (!saveRCoreRecord())
+		ret = false;
+	if (!saveUserRecord())
+		ret = false;
+	if (!saveDictRecord())
+		ret = false;
+	return ret;
+}
+
+bool RCore::saveRCoreRecord() {
+	if(!_rcoreRecord)
+		return false;
+	return _rcoreRecord->save();
+};
+
+bool RCore::saveUserRecord() {
+	if (!_userRecord)
+		return false;
+	return _userRecord->save();
+};
+
+bool RCore::saveDictRecord() {
+	if (!_dictRecord)
+		return false;
+	return _dictRecord->save();
+};
+
+bool RCore::loadRCoreRecord(const string path) {
+	if (_rcoreRecord) {
+		delete _rcoreRecord;
+	}
+	_rcoreRecord = new RCoreRecord(path);
+	return _rcoreRecord->getUserRecordDir().empty();
+}
+
+bool RCore::loadUserRecord(const string path) {
+	if (_userRecord) {
+		delete _userRecord;
+	}
+	_userRecord = new UserRecord(path);
+	return _userRecord->getUserName().empty();
+}
+
+bool RCore::loadDictRecord(const string path) {
+	if (_dictRecord) {
+		delete _dictRecord;
+	}
+	_dictRecord = new DictRecord(path);
+	return _dictRecord->getDictPath().empty();
 }

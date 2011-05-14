@@ -15,6 +15,8 @@ RConsole::RConsole(int argc, char** argv)
 RConsole::~RConsole() {
 	if (_rcore)
 		delete _rcore;
+	if (_rui)
+		delete _rui;
 }
 
 bool RConsole::initCore() {
@@ -47,6 +49,12 @@ RUI* RConsole::ui() {
 	return _rui;
 }
 
+bool RConsole::saveRecords() {
+	if (!_rcore)
+		return false;
+	return _rcore->saveRecords();
+}
+
 RTYPE_CMD RConsole::getCMD(int argc, char** argv) {
 	return get_cmd(argc,argv);
 }
@@ -64,15 +72,26 @@ void RConsole::doCommand(RTYPE_CMD cmd, int argc, char** argv) {
 	}
 
 	switch(cmd) {
-	case RTYPE_CMD_LOOKUPWORD:
-	{
-		CheckCMD cmd(argc - 2,&argv[2]);
-		cmd.exec(_rcore,_rui);
-	}
+		case RTYPE_CMD_LOOKUPWORD:
+		{
+			CheckCMD cmd(argc - 2,&argv[2]);
+			cmd.exec(_rcore,_rui);
+		}
 		break;
-	case RTYPE_CMD_INVALID:
+		case RTYPE_CMD_USER:
+		{
+				UserCMD cmd(argc - 2,&argv[2]);
+				cmd.exec(_rcore,_rui);
+		}
 		break;
-	default:
+		case RTYPE_CMD_UNKNOWN:
+		{	setError(RERROR_UNKNOWN_PARAM);
+			if (_rui)
+				_rui->show_error(MSG_CMD_UNKNOWN);
+		}
+		break;
+		case RTYPE_CMD_INVALID:
+		default:
 		break;
 	};
 }
