@@ -31,9 +31,9 @@ enum RECITE_CMD {
 	RECITE_CMD_INVALID
 };
 
-int getCMDArguNum(RECITE_CMD cmd, int argc, char** argv) {
+/*int getCMDArguNum(RECITE_CMD cmd, int argc, char** argv) {
 
-}
+}*/
 
 void argvsAnalyse(int argc, char** argv);
 void doCommand( const char* cmd, const char* param,...);

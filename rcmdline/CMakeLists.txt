@@ -11,6 +11,11 @@ INCLUDE_DIRECTORIES(
 SET (CMDLINE_SOURCES
     src/main.cpp
 	src/cmds.cpp
+	src/rcmd.cpp
+	src/rconsole.cpp
+	src/usercmd.cpp
+	src/dictcmd.cpp
+	src/checkcmd.cpp
 )
 
 ADD_EXECUTABLE(${PROJECT_BUILD_NAME} ${CMDLINE_SOURCES})
