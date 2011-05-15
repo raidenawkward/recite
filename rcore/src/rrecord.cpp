@@ -25,10 +25,14 @@ RecordBase::~RecordBase() {
 
 void RecordBase::setPath(const string path) {
 	_ini = new RIniFile(path);
+	if (_record)
+		_record->loadFromIni(_ini);
 }
 
 void RecordBase::setIni(RIniFile* ini) {
 	_ini = ini;
+	if (_record)
+		_record->loadFromIni(_ini);
 }
 
 void RecordBase::setProp(RPropSet* prop) {

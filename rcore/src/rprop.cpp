@@ -84,8 +84,9 @@ bool RPropSet::addItem(RPropItem &item) {
 RPropItem RPropSet::getItem(const string key) {
 	for (int i = 0; i < this->size(); ++i) {
 		RPropItem item = this->at(i);
-		if (item.prop() == key)
+		if (item.prop() == key) {
 			return item;
+		}
 	}
 	RPropItem empty;
 	return empty;
@@ -122,7 +123,8 @@ bool RPropSet::remove(int index) {
 }
 
 string RPropSet::getStr(const string key) {
-	return getItem(key).value();
+	string ret = getItem(key).value();
+	return ret;
 }
 
 int RPropSet::getInt(const string key) {

@@ -5,6 +5,10 @@ RUI::RUI()
 	,_spliterLength(UI_DEFAULT_RESULT_SPLITER_LEN) {
 }
 
+void RUI::show_msg(const string msg) {
+	cout<<msg<<endl;
+}
+
 void RUI::show_warning(const string warning) {
 	cout<<"warnning : "<<warning<<endl;
 }

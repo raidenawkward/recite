@@ -14,6 +14,7 @@ class RUI
 public:
 	RUI();
 	// output
+	void show_msg(const string msg);
 	void show_warning(const string warning);
 	void show_error(const string error);
 	void show_check_result(const string result);

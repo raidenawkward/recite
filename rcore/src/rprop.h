@@ -47,7 +47,6 @@ public:
 	bool saveToIni(RIniFile *file);
 	void traverse();
 
-protected:
 	void loadFromIni(RIniFile* file);
 
 protected:

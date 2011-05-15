@@ -24,6 +24,7 @@ bool RConsole::initCore() {
 		delete _rcore;
 	}
 	_rcore = new RCore();
+	_rcore->loadRecords();
 }
 
 bool RConsole::initUI() {

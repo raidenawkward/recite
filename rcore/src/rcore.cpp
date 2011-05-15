@@ -144,6 +144,21 @@ void RCore::clearDict() {
 	_dict = NULL;
 }
 
+bool RCore::addUser(const string name) {
+}
+
+bool RCore::delUser(const string name) {
+}
+
+bool RCore::setUserMail(const string mail) {
+}
+
+string RCore::getUserMail() {
+}
+
+bool RCore::setUserDict(const string dict) {
+}
+
 bool RCore::loadRecords() {
 	return loadRecords(RECORD_CORE_PATH);
 }
@@ -152,6 +167,7 @@ bool RCore::loadRecords(const string path) {
 	bool ret = false;
 	if (path.empty())
 		return ret;
+
 	if (!loadRCoreRecord(path))
 		return ret;
 
@@ -164,6 +180,7 @@ bool RCore::loadRecords(const string path) {
 	if (!loadUserRecord(user_record_path))
 		return ret;
 
+	_rcoreRecorePath = user_record_path;
 	string dict_record_path = _userRecord->getCurrentDict();
 	if (!loadDictRecord(dict_record_path))
 		return ret;
@@ -205,7 +222,7 @@ bool RCore::loadRCoreRecord(const string path) {
 		delete _rcoreRecord;
 	}
 	_rcoreRecord = new RCoreRecord(path);
-	return _rcoreRecord->getUserRecordDir().empty();
+	return !_rcoreRecord->getUserRecordDir().empty();
 }
 
 bool RCore::loadUserRecord(const string path) {
@@ -213,7 +230,7 @@ bool RCore::loadUserRecord(const string path) {
 		delete _userRecord;
 	}
 	_userRecord = new UserRecord(path);
-	return _userRecord->getUserName().empty();
+	return !_userRecord->getUserName().empty();
 }
 
 bool RCore::loadDictRecord(const string path) {
@@ -221,5 +238,5 @@ bool RCore::loadDictRecord(const string path) {
 		delete _dictRecord;
 	}
 	_dictRecord = new DictRecord(path);
-	return _dictRecord->getDictPath().empty();
+	return !_dictRecord->getDictPath().empty();
 }

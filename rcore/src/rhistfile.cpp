@@ -1,5 +1,6 @@
 #include "rhistfile.h"
-
+#include <sys/stat.h>
+#include <sys/types.h>
 
 RHistFile::RHistFile()
 		:_mode(ROPENMODE_READ)
@@ -19,7 +20,26 @@ RHistFile::~RHistFile() {
 		delete _stream;
 }
 
+string getDirFromPath(const string path) {
+	if (path.empty())
+		return string();
+	int length = path.length();
+	int i = length - 1;
+	for (; i >=0; --i) {
+#ifdef WIN32
+		char spliter = '\\';
+#else
+		char spliter = '/';
+#endif
+		if (path[i] == spliter)
+			break;
+	}
+	return path.substr(0,i);
+}
+
 rfile_error_t RHistFile::open(const string path, ropen_mode_t mode) {
+	string dir = getDirFromPath(path);
+	mkdir(dir.c_str(),S_IRWXU);
 	if (_stream) {
 		delete _stream;
 		_stream = NULL;

@@ -50,8 +50,17 @@ public:
 	string getDictTypeStr();
 	void clearDict();
 
+	bool addUser(const string name);
+	bool delUser(const string name);
+
+	bool setUserMail(const string mail);
+	string getUserMail();
+
+	bool setUserDict(const string dict);
+
 	bool loadRecords();//< default record file
 	bool loadRecords(const string path);//< dict, user...
+	string getCoreRecordPath() { return _rcoreRecorePath; }
 
 	bool saveRecords();
 	bool saveRCoreRecord();
