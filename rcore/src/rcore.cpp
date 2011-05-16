@@ -13,6 +13,7 @@ RCore::RCore()
 }
 
 RCore::~RCore() {
+	saveRecords();
 	clearDict();
 }
 
@@ -148,9 +149,16 @@ void RCore::clearDict() {
 }
 
 bool RCore::addUser(const string name) {
+	string path = _rcoreRecord->getUserRecordsDir() + name;
+#ifdef WIN32
+	path += "\\user.ini";
+#else
+	path += "/user.ini";
+#endif
 	if (!_userRecord) {
-		return false;
+		_userRecord = new UserRecord();
 	}
+	_userRecord->setPath(path);
 	if (_userRecord->getUserName() == name) {
 		return false;
 	}
@@ -195,15 +203,15 @@ bool RCore::loadRecords(const string path) {
 		return ret;
 	}
 
-	string user_record_path = _rcoreRecord->getUserRecordDir() + _rcoreRecord->getCurrentUser();
+	string user_record_path = _rcoreRecord->getUserRecordsDir() + _rcoreRecord->getCurrentUser();
 #ifdef WIN32
 	user_record_path += "\\user.ini";
 #else
 	user_record_path += "/user.ini";
 #endif
-	if (!loadUserRecord(user_record_path))
-		return ret;
-
+	if (!loadUserRecord(user_record_path)) {
+		;//return ret;
+	}
 	_rcoreRecorePath = user_record_path;
 	string dict_record_path = _userRecord->getCurrentDict();
 	if (!loadDictRecord(dict_record_path))
@@ -241,12 +249,19 @@ bool RCore::saveDictRecord() {
 	return _dictRecord->save();
 };
 
-void makeDefaultRCoreConfig(const string path) {
+bool makeDefaultRCoreConfig(const string path,RCoreRecord* coreRecord = NULL) {
 	mkdir(getDirFromPath(path).c_str(),S_IRWXU);
+	mkdir (RECORD_DEFAULT_USER_DIR,S_IRWXU);
 	RCoreRecord *record = new RCoreRecord(path);
-	record->setUserRecordDir("abcde");
+	record->setUserRecordsDir(RECORD_DEFAULT_USER_DIR);
 	record->setCurrentUser("guest");
-	record->save();
+
+	bool res = record->save();
+	if (res && coreRecord) {
+		coreRecord->setPath(path);
+		return true;
+	}
+	return false;
 }
 
 bool RCore::loadRCoreRecord(const string path) {
@@ -256,11 +271,22 @@ bool RCore::loadRCoreRecord(const string path) {
 		delete _rcoreRecord;
 	}
 	_rcoreRecord = new RCoreRecord(path);
-	if (!_rcoreRecord->getUserRecordDir().empty()) {
-		makeDefaultRCoreConfig(path);
-	}
 
+	if (_rcoreRecord->getUserRecordsDir().empty()) {
+		return makeDefaultRCoreConfig(path,_rcoreRecord);
+	}
 	return true;
+}
+
+bool makeDefaultUserConfig(const string path, UserRecord* recorder = NULL) {
+	mkdir(RECORD_DEFAULT_USER_DIR,S_IRWXU);
+	mkdir(getDirFromPath(path).c_str(),S_IRWXU);
+	UserRecord *tmp_record = new UserRecord(path);
+	if (tmp_record->save() && recorder) {
+		recorder->setPath(path);
+		return true;
+	}
+	return false;
 }
 
 bool RCore::loadUserRecord(const string path) {
@@ -268,7 +294,10 @@ bool RCore::loadUserRecord(const string path) {
 		delete _userRecord;
 	}
 	_userRecord = new UserRecord(path);
-	return !_userRecord->getUserName().empty();
+	if (_userRecord->getUserName().empty()) {
+		return makeDefaultUserConfig(path,_userRecord);
+	}
+	return true;
 }
 
 bool RCore::loadDictRecord(const string path) {

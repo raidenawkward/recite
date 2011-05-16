@@ -287,7 +287,7 @@ bool RIniFile::save() {
 		string line = make_ini_item(item.first,item.second);
 		writeLine(line);
 	}
-	close();
+	//close();
 	return true;
 }
 

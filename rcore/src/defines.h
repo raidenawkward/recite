@@ -4,8 +4,10 @@
 // record info
 #ifdef WIN32
 	#define RECORD_CORE_PATH "c:\\ggst\\config"
+	#define RECORD_DEFAULT_USER_DIR "c:\\ggst\\users\\"
 #else
-	#define RECORD_CORE_PATH "/usr/local/share/ggst/config"
+	#define RECORD_DEFAULT_USER_DIR "/home/raiden/.ggst/users/"
+	#define RECORD_CORE_PATH "/home/raiden/.ggst/config"
 #endif
 
 

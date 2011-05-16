@@ -96,8 +96,8 @@ public:
 	RCoreRecord(RIniFile* ini);
 	~RCoreRecord();
 
-	void setUserRecordDir(const string dir);
-	string getUserRecordDir();
+	void setUserRecordsDir(const string dir);
+	string getUserRecordsDir();
 
 	void setCurrentUser(const string user);
 	string getCurrentUser();

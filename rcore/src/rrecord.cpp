@@ -259,13 +259,13 @@ RCoreRecord::~RCoreRecord() {
 
 }
 
-void RCoreRecord::setUserRecordDir(const string dir) {
+void RCoreRecord::setUserRecordsDir(const string dir) {
 	if (!_record)
 		return;
 	_record->setValue(INI_KEY_RCORE_USERDIR,dir);
 }
 
-string RCoreRecord::getUserRecordDir() {
+string RCoreRecord::getUserRecordsDir() {
 	if (!_record)
 		return string();
 	return _record->getStr(INI_KEY_RCORE_USERDIR);
