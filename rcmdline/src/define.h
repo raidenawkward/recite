@@ -13,6 +13,8 @@
 // warnnings
 #define MSG_CMD_CHECK_NODICT "no dict input"
 #define MSG_CMD_UNKNOWN "unknow parameter"
+#define MSG_CMD_ADDUSER_SUCCEED "succeed added user "
+#define MSG_CMD_ADDUSER_FAILED "failed to added user "
 
 // cmds
 //

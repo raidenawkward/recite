@@ -8,6 +8,7 @@
 	#define RECORD_CORE_PATH "/usr/local/share/ggst/config"
 #endif
 
+
 // defines for ini
 #define INI_KEY_DICT_NAME "dict.name"
 #define INI_KEY_DICT_PATH "dict.path"

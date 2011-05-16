@@ -116,6 +116,13 @@ void UserCMD::showInfo(RParamList& list) {
 }
 
 void UserCMD::setUser(RParamList& list) {
+	if (list.count() <= 0)
+		return;
+	if (_rcore->addUser(list.at(0))) {
+		_rui->show_msg(string(MSG_CMD_ADDUSER_SUCCEED) + list.at(0));
+	} else {
+		_rui->show_msg(string(MSG_CMD_ADDUSER_FAILED) + list.at(0));
+	}
 }
 
 void UserCMD::setMail(RParamList& list) {

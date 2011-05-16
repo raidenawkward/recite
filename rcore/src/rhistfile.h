@@ -43,6 +43,8 @@ enum ropen_mode_t {
 	ROPENMODE_READWRITE      ///< readwrite mode
 };
 
+string getDirFromPath(const string path);
+
 class RHistFile
 {
 public:

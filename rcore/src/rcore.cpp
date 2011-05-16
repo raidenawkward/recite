@@ -1,4 +1,7 @@
 #include "rcore.h"
+#include <sys/stat.h>
+#include <sys/types.h>
+
 
 RCore::RCore()
 	:_dict(NULL)
@@ -145,6 +148,14 @@ void RCore::clearDict() {
 }
 
 bool RCore::addUser(const string name) {
+	if (!_userRecord) {
+		return false;
+	}
+	if (_userRecord->getUserName() == name) {
+		return false;
+	}
+	_userRecord->setUserName(name);
+	return true;
 }
 
 bool RCore::delUser(const string name) {
@@ -157,6 +168,18 @@ string RCore::getUserMail() {
 }
 
 bool RCore::setUserDict(const string dict) {
+	if (!_userRecord || !_dictRecord)
+		return false;
+	_userRecord->setCurrentDict(dict);
+	DictRecord* tmp_dict_record = new DictRecord(dict);
+	if (_dictRecord->getDictName() != tmp_dict_record->getDictName()) {
+		_dictRecord->save();
+		delete _dictRecord;
+		_dictRecord = tmp_dict_record;
+	} else {
+		delete tmp_dict_record;
+	}
+	return true;
 }
 
 bool RCore::loadRecords() {
@@ -168,8 +191,9 @@ bool RCore::loadRecords(const string path) {
 	if (path.empty())
 		return ret;
 
-	if (!loadRCoreRecord(path))
+	if (!loadRCoreRecord(path)) {
 		return ret;
+	}
 
 	string user_record_path = _rcoreRecord->getUserRecordDir() + _rcoreRecord->getCurrentUser();
 #ifdef WIN32
@@ -217,12 +241,26 @@ bool RCore::saveDictRecord() {
 	return _dictRecord->save();
 };
 
+void makeDefaultRCoreConfig(const string path) {
+	mkdir(getDirFromPath(path).c_str(),S_IRWXU);
+	RCoreRecord *record = new RCoreRecord(path);
+	record->setUserRecordDir("abcde");
+	record->setCurrentUser("guest");
+	record->save();
+}
+
 bool RCore::loadRCoreRecord(const string path) {
+	if (path.empty())
+		return false;
 	if (_rcoreRecord) {
 		delete _rcoreRecord;
 	}
 	_rcoreRecord = new RCoreRecord(path);
-	return !_rcoreRecord->getUserRecordDir().empty();
+	if (!_rcoreRecord->getUserRecordDir().empty()) {
+		makeDefaultRCoreConfig(path);
+	}
+
+	return true;
 }
 
 bool RCore::loadUserRecord(const string path) {
