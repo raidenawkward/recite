@@ -7,6 +7,7 @@
 enum RTYPE_USERCMD {
 	RTYPE_USERCMD_SHOW_USER,
 	RTYPE_USERCMD_SET_USER,
+	RTYPE_USERCMD_SWITCH_USER,
 	RTYPE_USERCMD_DEL_USER,
 	RTYPE_USERCMD_SET_MAIL,
 	RTYPE_USERCMD_SET_DICT,
@@ -39,6 +40,7 @@ public:
 protected:
 	void showInfo(RParamList& list);
 	void setUser(RParamList& list);
+	void switchUser(RParamList& list);
 	void setMail(RParamList& list);
 	void delUser(RParamList& list);
 	void setDict(RParamList& list);

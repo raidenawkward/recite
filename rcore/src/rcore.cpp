@@ -1,7 +1,7 @@
 #include "rcore.h"
 #include <sys/stat.h>
 #include <sys/types.h>
-
+#include <sys/stat.h>
 
 RCore::RCore()
 	:_dict(NULL)
@@ -13,7 +13,7 @@ RCore::RCore()
 }
 
 RCore::~RCore() {
-	saveRecords();
+	saveRCoreRecord();
 	clearDict();
 }
 
@@ -148,8 +148,17 @@ void RCore::clearDict() {
 	_dict = NULL;
 }
 
+bool RCore::existUser(const string name) {
+	return access(name.c_str(),NULL) == 0;
+}
+
 bool RCore::addUser(const string name) {
+	if (!_rcoreRecord)
+		return false;
 	string path = _rcoreRecord->getUserRecordsDir() + name;
+	if (existUser(path)) {
+		return false;
+	}
 #ifdef WIN32
 	path += "\\user.ini";
 #else
@@ -163,16 +172,40 @@ bool RCore::addUser(const string name) {
 		return false;
 	}
 	_userRecord->setUserName(name);
+	saveUserRecord();
 	return true;
+}
+
+bool RCore::switchUser(const string user) {
+	if (!_rcoreRecord)
+		return false;
+	string path = _rcoreRecord->getUserRecordsDir() + user;
+	if (!existUser(path)) {
+		return false;
+	}
+#ifdef WIN32
+	path += "\\user.ini";
+#else
+	path += "/user.ini";
+#endif
+	if (!_userRecord) {
+		_userRecord = new UserRecord();
+	}
+	_userRecord->setPath(path);
+	_rcoreRecord->setCurrentUser(user);
+	saveUserRecord();
 }
 
 bool RCore::delUser(const string name) {
 }
 
 bool RCore::setUserMail(const string mail) {
+	_userRecord->setMail(mail);
+	return saveUserRecord();
 }
 
 string RCore::getUserMail() {
+	return _userRecord->getMail();
 }
 
 bool RCore::setUserDict(const string dict) {
@@ -187,6 +220,8 @@ bool RCore::setUserDict(const string dict) {
 	} else {
 		delete tmp_dict_record;
 	}
+	saveDictRecord();
+	saveUserRecord();
 	return true;
 }
 

@@ -50,6 +50,8 @@ public:
 	string getDictTypeStr();
 	void clearDict();
 
+	bool existUser(const string name);
+	bool switchUser(const string name);
 	bool addUser(const string name);
 	bool delUser(const string name);
 

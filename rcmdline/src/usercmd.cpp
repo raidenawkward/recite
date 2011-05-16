@@ -25,6 +25,8 @@ RTYPE_USERCMD UserCMD::getUserCMD(const string str) {
 		return RTYPE_USERCMD_NOTCMD;
 	if (str == CMD_USER_SET_USER_SHORT || str == CMD_USER_SET_USER)
 		return RTYPE_USERCMD_SET_USER;
+	if (str == CMD_USER_SWITCH_SHORT || str == CMD_USER_SWITCH)
+		return RTYPE_USERCMD_SWITCH_USER;
 	if (str == CMD_USER_SET_DICT || str == CMD_USER_SET_DICT_SHORT)
 		return RTYPE_USERCMD_SET_DICT;
 	if (str == CMD_USER_SET_MAIL_SHORT || str == CMD_USER_SET_MAIL)
@@ -72,6 +74,9 @@ void UserCMD::doCommands() {
 				break;
 			case RTYPE_USERCMD_SET_USER:
 				setUser(params);
+				break;
+			case RTYPE_USERCMD_SWITCH_USER:
+				switchUser(params);
 				break;
 			case RTYPE_USERCMD_DEL_USER:
 				delUser(params);
@@ -125,7 +130,32 @@ void UserCMD::setUser(RParamList& list) {
 	}
 }
 
+void UserCMD::switchUser(RParamList& list) {
+	if (list.count() != 1)
+		return;
+	if (_rcore->switchUser(list.at(0))) {
+		_rui->show_msg(string(MSG_CMD_SWITCHUSER_SUCCEED) + list.at(0));
+	} else {
+		_rui->show_msg(string(MSG_CMD_SWITCHUSER_FAILED) + list.at(0));
+	}
+}
+
 void UserCMD::setMail(RParamList& list) {
+	if (list.count() <= 0) {
+		_rui->show_error("input mail address");
+		return;
+	}
+	string mail;
+	for (int i = 0; i < list.count(); ++i) {
+		mail += list.at(i);
+		if (i > 1 && i != list.count())
+			mail += " , ";
+	}
+	if (_rcore->setUserMail(mail)) {
+		_rui->show_msg("mail set succeed");
+	} else {
+		_rui->show_warning("cannot set mail");
+	}
 }
 
 void UserCMD::delUser(RParamList& list) {

@@ -15,6 +15,8 @@
 #define MSG_CMD_UNKNOWN "unknow parameter"
 #define MSG_CMD_ADDUSER_SUCCEED "succeed added user "
 #define MSG_CMD_ADDUSER_FAILED "failed to added user "
+#define MSG_CMD_SWITCHUSER_SUCCEED "succeed switched to user "
+#define MSG_CMD_SWITCHUSER_FAILED "failed switched to user "
 
 // cmds
 //
@@ -27,6 +29,8 @@
 #define CMD_USER_SHOW "--show"
 #define CMD_USER_SET_USER_SHORT "-a"
 #define CMD_USER_SET_USER "--add"
+#define CMD_USER_SWITCH_SHORT "-s"
+#define CMD_USER_SWITCH "--switch"
 #define CMD_USER_SET_MAIL_SHORT "-m"
 #define CMD_USER_SET_MAIL "--mail"
 #define CMD_USER_SET_DICT_SHORT "-d"
