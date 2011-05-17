@@ -84,6 +84,9 @@ public:
 	void setRegistDate(const string date);
 	string getRegistDate();
 
+	void setCurrentDictName(const string name);
+	string getCurrentDictName();
+
 	void setCurrentDict(const string path);
 	string getCurrentDict();
 };

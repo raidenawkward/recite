@@ -25,8 +25,8 @@
 #define CMD_CHECK "check"
 
 // user cmds
-#define CMD_USER_SHOW_SHORT "-s"
-#define CMD_USER_SHOW "--show"
+#define CMD_USER_SHOW_SHORT "-i"
+#define CMD_USER_SHOW "--info"
 #define CMD_USER_SET_USER_SHORT "-a"
 #define CMD_USER_SET_USER "--add"
 #define CMD_USER_SWITCH_SHORT "-s"

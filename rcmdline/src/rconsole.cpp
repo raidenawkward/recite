@@ -9,7 +9,7 @@ RConsole::RConsole(int argc, char** argv)
 	initCore();
 	initConfig();
 	initUI();
-	initDict();
+	//initDict();
 }
 
 RConsole::~RConsole() {

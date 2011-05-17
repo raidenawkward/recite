@@ -226,6 +226,18 @@ string UserRecord::getRegistDate() {
 	_record->getStr(INI_KEY_USER_REGISTDATE);
 }
 
+void UserRecord::setCurrentDictName(const string name) {
+	if (!_record)
+		return;
+	_record->setValue(INI_KEY_USER_DICT_NAME,name);
+}
+
+string UserRecord::getCurrentDictName() {
+	if (!_record)
+		return string();
+	return _record->getStr(INI_KEY_USER_DICT_NAME);
+}
+
 void UserRecord::setCurrentDict(const string path) {
 	if (!_record)
 		return;

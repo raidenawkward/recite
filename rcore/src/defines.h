@@ -22,6 +22,7 @@
 #define INI_KEY_USER_MAIL "user.mail"
 #define INI_KEY_USER_REGISTDATE "user.date.regist"
 #define INI_KEY_USER_CURRENTDICT "user.dict.current"
+#define INI_KEY_USER_DICT_NAME "user.dict.name"
 
 #define INI_KEY_RCORE_USERDIR "rcore.user.dir"
 #define INI_KEY_RCORE_CURRENT_USER "core.user.current"

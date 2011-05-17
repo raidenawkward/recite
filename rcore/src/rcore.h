@@ -34,6 +34,7 @@ public:
 	bool loadDict(DictBase* dictBase);
 
 	string getDictName();
+	static string getDictName(const string path);
 	int getDictWordCount();
 	string getDictPath();
 
@@ -54,11 +55,12 @@ public:
 	bool switchUser(const string name);
 	bool addUser(const string name);
 	bool delUser(const string name);
+	string getCurrentUser();
 
-	bool setUserMail(const string mail);
-	string getUserMail();
+	bool setCurrentUserMail(const string mail);
+	string getCurrentUserMail();
 
-	bool setUserDict(const string dict);
+	bool setUserDictDir(const string dict);
 
 	bool loadRecords();//< default record file
 	bool loadRecords(const string path);//< dict, user...

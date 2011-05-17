@@ -118,6 +118,9 @@ void UserCMD::exec(RCore* core, RUI* ui) {
 }
 
 void UserCMD::showInfo(RParamList& list) {
+	_rui->show_msg(string("current user : ") + _rcore->getCurrentUser());
+	_rui->show_msg(string("mail : ") + _rcore->getCurrentUserMail());
+	_rui->show_msg(string("current dict : ") + _rcore->getDictName());
 }
 
 void UserCMD::setUser(RParamList& list) {
@@ -151,7 +154,7 @@ void UserCMD::setMail(RParamList& list) {
 		if (i > 1 && i != list.count())
 			mail += " , ";
 	}
-	if (_rcore->setUserMail(mail)) {
+	if (_rcore->setCurrentUserMail(mail)) {
 		_rui->show_msg("mail set succeed");
 	} else {
 		_rui->show_warning("cannot set mail");
@@ -167,7 +170,7 @@ void UserCMD::setDict(RParamList& list) {
 		return;
 	}
 	string newdict = list.at(0);
-	if (_rcore->loadDict(list.at(0)))
+	if (_rcore->setUserDictDir(newdict))
 		_rui->show_msg(string("loading dict ") + newdict + string(" succeed"));
 	else
 		_rui->show_warning(string("error when loading dict ") + newdict);
