@@ -2,6 +2,10 @@
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <sys/stat.h>
+#include <unistd.h>
+
+string get_abs_path(const string file);
+
 
 RCore::RCore()
 	:_dict(NULL)
@@ -341,4 +345,17 @@ bool RCore::loadDictRecord(const string path) {
 	}
 	_dictRecord = new DictRecord(path);
 	return !_dictRecord->getDictPath().empty();
+}
+
+string get_abs_path(const string file) {
+	string ret = file;
+#ifdef WIN32
+	return ret;
+#else
+	if (file.at(0) == '/')
+		return ret;
+	ret = get_current_dir_name();
+	ret += "/";
+	return ret + file;
+#endif
 }
