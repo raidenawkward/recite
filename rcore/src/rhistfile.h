@@ -44,6 +44,7 @@ enum ropen_mode_t {
 };
 
 string getDirFromPath(const string path);
+char get_path_spliter();
 
 class RHistFile
 {

@@ -26,15 +26,20 @@ string getDirFromPath(const string path) {
 	int length = path.length();
 	int i = length - 1;
 	for (; i >=0; --i) {
-#ifdef WIN32
-		char spliter = '\\';
-#else
-		char spliter = '/';
-#endif
+		char spliter = get_path_spliter();
 		if (path[i] == spliter)
 			break;
 	}
 	return path.substr(0,i);
+}
+
+char get_path_spliter() {
+#ifdef WIN32
+	char spliter = '\\';
+#else
+	char spliter = '/';
+#endif
+	return spliter;
 }
 
 rfile_error_t RHistFile::open(const string path, ropen_mode_t mode) {

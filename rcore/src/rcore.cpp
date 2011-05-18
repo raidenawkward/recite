@@ -5,7 +5,7 @@
 #include <unistd.h>
 
 string get_abs_path(const string file);
-
+string get_name_from_path(const string path);
 
 RCore::RCore()
 	:_dict(NULL)
@@ -169,7 +169,7 @@ void RCore::clearDict() {
 }
 
 bool RCore::existUser(const string name) {
-	return access(name.c_str(),NULL) == 0;
+	return access(name.c_str(),0) == 0;
 }
 
 bool RCore::addUser(const string name) {
@@ -179,11 +179,8 @@ bool RCore::addUser(const string name) {
 	if (existUser(path)) {
 		return false;
 	}
-#ifdef WIN32
-	path += "\\user.ini";
-#else
-	path += "/user.ini";
-#endif
+	path += get_path_spliter();
+	path += "user.ini";
 	if (!_userRecord) {
 		_userRecord = new UserRecord();
 	}
@@ -203,11 +200,8 @@ bool RCore::switchUser(const string user) {
 	if (!existUser(path)) {
 		return false;
 	}
-#ifdef WIN32
-	path += "\\user.ini";
-#else
-	path += "/user.ini";
-#endif
+	path += get_path_spliter();
+	path += "user.ini";
 	if (!_userRecord) {
 		_userRecord = new UserRecord();
 	}
@@ -236,6 +230,11 @@ string RCore::getCurrentUserMail() {
 	return _userRecord->getMail();
 }
 
+string getDictRestoreName(const string dictPath) {
+//mkdir(getDirFromPath(path).c_str(),S_IRWXU);
+	return get_name_from_path(dictPath);
+}
+
 bool RCore::setUserDictDir(const string dictpath) {
 	if (!_userRecord || !_dictRecord)
 		return false;
@@ -248,14 +247,20 @@ bool RCore::setUserDictDir(const string dictpath) {
 
 	string dict_record_path = _rcoreRecord->getUserRecordsDir() + _rcoreRecord->getCurrentUser();
 
-#ifdef WIN32
-	dict_record_path += "\\";
-#else
-	dict_record_path += "/";
-#endif
-	dict_record_path += dict_name;
+	dict_record_path += get_path_spliter();
+
+	mkdir(dict_record_path.c_str(),S_IRWXU);// may useless code
+	dict_record_path += getDictRestoreName(dictpath);
+	mkdir(dict_record_path.c_str(),S_IRWXU);
+
+	dict_record_path += get_path_spliter();
+	dict_record_path += "dict.ini";
+
 	DictRecord* tmp_dict_record = new DictRecord(dict_record_path);
-	if (_dictRecord->getDictName() != tmp_dict_record->getDictName()) {
+	printf("dict record path : %s\n",dict_record_path.c_str());
+	printf("dict record name : %s\n",_dictRecord->getDictName().c_str());
+	if (_dictRecord->getDictPath().empty()
+		|| _dictRecord->getDictName() != tmp_dict_record->getDictName()) {
 		_dictRecord->save();
 		delete _dictRecord;
 		_dictRecord = tmp_dict_record;
@@ -282,11 +287,8 @@ bool RCore::loadRecords(const string path) {
 	}
 
 	string user_record_path = _rcoreRecord->getUserRecordsDir() + _rcoreRecord->getCurrentUser();
-#ifdef WIN32
-	user_record_path += "\\user.ini";
-#else
-	user_record_path += "/user.ini";
-#endif
+	user_record_path += get_path_spliter();
+	user_record_path += "user.ini";
 	if (!loadUserRecord(user_record_path)) {
 		;//return ret;
 	}
@@ -395,13 +397,32 @@ bool RCore::loadDictRecord(const string path) {
 
 string get_abs_path(const string file) {
 	string ret = file;
-#ifdef WIN32
-	return ret;
-#else
-	if (file.at(0) == '/')
+	if (file.at(0) == get_path_spliter())
 		return ret;
 	ret = get_current_dir_name();
-	ret += "/";
+	ret += get_path_spliter();
 	return ret + file;
-#endif
+}
+
+string get_name_from_path(const string path) {
+	int length = path.length();
+	string tmp;
+	for (int i = length - 1; i >= 0; --i) {
+		char ch = path.at(i);
+		if (ch == get_path_spliter() && i == length - 1) {
+			continue;
+		}
+		if (ch == get_path_spliter()) {
+			break;
+		}
+		tmp += ch;
+	}
+	if (tmp.empty()) {
+		return tmp;
+	}
+	string ret;
+	for (int j = tmp.length() - 1; j >=0; --j) {
+		ret += tmp.at(j);
+	}
+	return ret;
 }
