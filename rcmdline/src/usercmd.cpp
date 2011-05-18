@@ -16,12 +16,9 @@ UserCMD::UserCMD(RParamList& list)
 UserCMD::~UserCMD() {
 }
 
-bool isCMD(const string str) {
-	return str[0] == '-';
-}
 
 RTYPE_USERCMD UserCMD::getUserCMD(const string str) {
-	if (!isCMD(str))
+	if (!RCMD::isCMD(str))
 		return RTYPE_USERCMD_NOTCMD;
 	if (str == CMD_USER_SET_USER_SHORT || str == CMD_USER_SET_USER)
 		return RTYPE_USERCMD_SET_USER;
@@ -49,7 +46,7 @@ int UserCMD::parseCMD() {
 			++i;
 			while (i < _paramList.size()) {
 				string next = _paramList.at(i);
-				if (!isCMD(next)) {
+				if (!RCMD::isCMD(next)) {
 					list.push_back(next);
 					++i;
 				} else {

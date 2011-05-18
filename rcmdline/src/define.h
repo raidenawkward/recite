@@ -38,6 +38,12 @@
 #define CMD_USER_DEL_USER_SHORT "-D"
 #define CMD_USER_DEL_USER "--delete"
 
+// check cmds
+#define CMD_CHECK_PHRASE_SHORT "-p"
+#define CMD_CHECK_PHRASE "--phrase"
+#define CMD_CHECK_WORD_SHORT "-w"
+#define CMD_CHECK_WORD "--word"
+
 // error nums
 enum RERROR {
 	RERROR_NOERROR,

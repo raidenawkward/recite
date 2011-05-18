@@ -2,7 +2,6 @@
 #define USERCMD_H
 
 #include "rcmd.h"
-#include "cmds.h"
 
 enum RTYPE_USERCMD {
 	RTYPE_USERCMD_SHOW_USER,
@@ -31,12 +30,6 @@ public:
 	void showUnknownCMDs();
 	RTYPE_USERCMD getUserCMD(const string str);
 
-	void setUI(RUI* ui) { _rui = ui; }
-	RUI* ui() { return _rui; }
-
-	void setCore(RCore* core) { _rcore = core; }
-	RCore* core() { return _rcore; }
-
 protected:
 	void showInfo(RParamList& list);
 	void setUser(RParamList& list);
@@ -51,8 +44,6 @@ private:
 	vector<RTYPE_USERCMD> _cmdList;
 	vector<RParamList> _paramLists;
 	vector<string> _unParsed;
-	RCore* _rcore;
-	RUI* _rui;
 };
 
 

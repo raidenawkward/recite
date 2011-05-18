@@ -35,14 +35,24 @@ public:
 	RCMD(RParamList& params);
 	virtual ~RCMD();
 
+	static bool isCMD(const string str);
+
 	RParamList& getParamList();
 	virtual void exec(RCore* core, RUI* ui) = 0;
+
+	void setUI(RUI* ui) { _rui = ui; }
+    RUI* ui() { return _rui; }
+
+    void setCore(RCore* core) { _rcore = core; }
+	RCore* core() { return _rcore; }
 
 protected:
 	virtual int loadArgv(int argc,char** argv);
 
 protected:
 	RParamList _paramList;
+	RCore *_rcore;
+	RUI *_rui;
 };
 
 #endif // RCMD_H

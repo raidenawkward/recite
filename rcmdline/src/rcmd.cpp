@@ -78,6 +78,12 @@ RCMD::RCMD(RParamList& params) {
 RCMD::~RCMD() {
 }
 
+bool RCMD::isCMD(const string str) {
+	if (str.empty())
+		return true;
+	return str[0] == '-';
+}
+
 int RCMD::loadArgv(int argc, char** argv) {
 	if (!argc || !argv)
 		return 0;
