@@ -94,6 +94,35 @@ int RCMD::loadArgv(int argc, char** argv) {
 	return _paramList.size();
 }
 
+int RCMD::parseCMD(RCMD_callback* cb) {
+	if (!cb)
+		return 0;
+	int i = 0;
+	while(i < _paramList.size()) {
+		string tmp = _paramList.at(i);
+		int cmd = cb->getCMD(tmp);
+		if (cmd != 0) {
+			_cmdList.push_back(cmd);
+			RParamList list;
+			++i;
+			while (i < _paramList.size()) {
+				string next = _paramList.at(i);
+				if (!RCMD::isCMD(next)) {
+					list.push_back(next);
+					++i;
+				} else {
+					break;
+				}
+			}
+			_paramLists.push_back(list);
+		} else {
+			_unParsed.push_back(tmp);
+			++i;
+		}
+	}
+	return _cmdList.size();
+}
+
 RParamList& RCMD::getParamList() {
 	return _paramList;
 }

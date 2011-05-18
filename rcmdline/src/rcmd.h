@@ -27,6 +27,13 @@ public:
 	int count();
 };
 
+class RCMD_callback
+{
+public:
+	RCMD_callback() {}
+	virtual int getCMD(const string) = 0;
+};
+
 class RCMD
 {
 public:
@@ -48,11 +55,14 @@ public:
 
 protected:
 	virtual int loadArgv(int argc,char** argv);
-
+	virtual int parseCMD(RCMD_callback* cb);
 protected:
 	RParamList _paramList;
 	RCore *_rcore;
 	RUI *_rui;
+	vector<int> _cmdList;
+    vector<RParamList> _paramLists;
+    vector<string> _unParsed;
 };
 
 #endif // RCMD_H

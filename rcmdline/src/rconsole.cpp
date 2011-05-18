@@ -34,11 +34,14 @@ bool RConsole::initUI() {
 }
 
 bool RConsole::initDict() {
+#if 0
 	bool ret = _rcore->loadDict(SET_DEFAULT_DICT);
 	if (!ret || !_rcore->isDictValid()) {
 		setError(RERROR_INIT_FAILED);
 	}
 	return ret;
+#endif
+	return true;
 }
 
 bool RConsole::initConfig() {

@@ -3,8 +3,8 @@
 
 // settings
 //
-#define SET_CONFIG_FILE_DIR "~/ggst/"
-#define SET_DEFAULT_DICT "/home/raiden/workspace/recite/dictsupport/dict/stardict-langdao-ec-gb-2.4.2/"
+//#define SET_CONFIG_FILE_DIR "~/ggst/"
+//#define SET_DEFAULT_DICT "/home/raiden/workspace/recite/dictsupport/dict/stardict-langdao-ec-gb-2.4.2/"
 
 #define UI_DEFAULT_RESULT_SPLITER "="
 #define UI_DEFAULT_RESULT_SPLITER_LEN 43

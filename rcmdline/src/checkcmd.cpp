@@ -15,7 +15,7 @@ CheckCMD::CheckCMD(RParamList& params)
 CheckCMD::~CheckCMD() {
 }
 
-RTYPE_CHECKCMD CheckCMD::getCMD(const string str) {
+int CheckCMD::getCMD(const string str) {
 	if (!RCMD::isCMD(str))
 		return RTYPE_CHECKCMD_NOTCMD;
 	if (str == CMD_CHECK_PHRASE_SHORT || str == CMD_CHECK_PHRASE)
@@ -25,6 +25,7 @@ RTYPE_CHECKCMD CheckCMD::getCMD(const string str) {
 	return RTYPE_CHECKCMD_UNKNOWN;
 }
 
+#if 0
 int CheckCMD::parseCMD() {
 	int i = 0;
 	while(i < _paramList.size()) {
@@ -51,6 +52,7 @@ int CheckCMD::parseCMD() {
 	}
 	return _cmdList.size();
 }
+#endif
 
 void CheckCMD::doCommands() {
 	for (int i = 0; i < _cmdList.size(); ++i) {
@@ -79,7 +81,7 @@ void CheckCMD::exec(RCore* core, RUI* ui) {
 	if (!core->isDictValid()) {
 		_rui->show_warning(MSG_CMD_CHECK_NODICT);
 	}
-	parseCMD();
+	RCMD::parseCMD(this);
 	doCommands();
 	showUnknownCMDs();
 }
@@ -87,11 +89,11 @@ void CheckCMD::exec(RCore* core, RUI* ui) {
 void CheckCMD::check(RParamList& list) {
 	for (int i = 0; i < _paramList.count(); ++i) {
 		string word = _paramList.at(i);
-		if (word[0] != '-' && word[0] != '/') {
-			if (i > 1)
-				_rui->show_check_result_spliter();
+			if (word[0] != '-' && word[0] != '/') {
 			_rui->show_msg(string("checking ") + word + string(":"));
 			_rui->show_check_result(_rcore->lookUpWord(word.c_str()));
+			if (i != _paramList.count() - 1)
+				_rui->show_check_result_spliter();
 		}
 	}
 }

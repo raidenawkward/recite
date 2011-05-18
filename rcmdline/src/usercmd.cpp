@@ -17,7 +17,7 @@ UserCMD::~UserCMD() {
 }
 
 
-RTYPE_USERCMD UserCMD::getUserCMD(const string str) {
+int UserCMD::getCMD(const string str) {
 	if (!RCMD::isCMD(str))
 		return RTYPE_USERCMD_NOTCMD;
 	if (str == CMD_USER_SET_USER_SHORT || str == CMD_USER_SET_USER)
@@ -35,6 +35,7 @@ RTYPE_USERCMD UserCMD::getUserCMD(const string str) {
 	return RTYPE_USERCMD_UNKNOWN;
 }
 
+#if 0
 int UserCMD::parseCMD() {
 	int i = 0;
 	while(i < _paramList.size()) {
@@ -61,6 +62,7 @@ int UserCMD::parseCMD() {
 	}
 	return _cmdList.size();
 }
+#endif
 
 void UserCMD::doCommands() {
 	for (int i = 0; i < _cmdList.size(); ++i) {
@@ -109,7 +111,7 @@ void UserCMD::exec(RCore* core, RUI* ui) {
 	setUI(ui);
 	setCore(core);
 
-	parseCMD();
+	parseCMD(this);
 	doCommands();
 	showUnknownCMDs();
 }
