@@ -64,7 +64,11 @@ public:
 
 	bool loadRecords();//< default record file
 	bool loadRecords(const string path);//< dict, user...
+
 	string getCoreRecordPath() { return _rcoreRecorePath; }
+	string getUserDir(const string user = string());// unimplemented
+	string getUserDictDir(const string user = string());// unimplemented
+	string getUserReciteDir(const string user = string());// unimplemented
 
 	bool saveRecords();
 	bool saveRCoreRecord();
