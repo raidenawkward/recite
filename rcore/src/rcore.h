@@ -67,18 +67,29 @@ public:
 
 	string getCoreRecordPath() { return _rcoreRecorePath; }
 	string getUserDir(const string user = string());// unimplemented
-	string getUserDictDir(const string user = string());// unimplemented
-	string getUserReciteDir(const string user = string());// unimplemented
+	string getUserDictDir(const string dictname, const string user = string());// unimplemented
 
 	bool saveRecords();
 	bool saveRCoreRecord();
 	bool saveUserRecord();
 	bool saveDictRecord();
 
+	// for recite
+	bool saveReciteRecord();
+	int getNextWordToday();
+	int getPrevWordToday();
+	int getWordCountToday();
+	int getWordCountHaveRecite();
+
+	void getWordList(const RDate& date);
+
 protected:
 	bool loadRCoreRecord(const string path);
 	bool loadUserRecord(const string path);
 	bool loadDictRecord(const string path);
+
+	// for recite
+	int generateReciteList(const RDate& date);
 
 private:
 	DictBase *_dict;
@@ -88,6 +99,9 @@ private:
 	RCoreRecord* _rcoreRecord;
 	UserRecord* _userRecord;
 	DictRecord* _dictRecord;
+
+	// for recite
+	RDate _today;
 };
 
 

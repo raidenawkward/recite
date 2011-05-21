@@ -119,6 +119,7 @@ void UserCMD::exec(RCore* core, RUI* ui) {
 void UserCMD::showInfo(RParamList& list) {
 	_rui->show_msg(string("current user : ") + _rcore->getCurrentUser());
 	_rui->show_msg(string("mail : ") + _rcore->getCurrentUserMail());
+	_rui->show_msg(string("current path : ") + _rcore->getUserDir());
 	_rui->show_msg(string("current dict : ") + _rcore->getDictName());
 }
 

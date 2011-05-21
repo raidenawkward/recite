@@ -169,7 +169,11 @@ void RCore::clearDict() {
 }
 
 bool RCore::existUser(const string name) {
-	return access(name.c_str(),0) == 0;
+	string path = _rcoreRecord->getUserRecordsDir();
+	if (*path.end() != get_path_spliter())
+		path += get_path_spliter();
+	path += name;
+	return access(path.c_str(),0) == 0;
 }
 
 bool RCore::addUser(const string name) {
@@ -234,6 +238,28 @@ string getDictRestoreName(const string dictPath) {
 //mkdir(getDirFromPath(path).c_str(),S_IRWXU);
 	return get_name_from_path(dictPath);
 }
+
+string RCore::getUserDir(const string user) {
+	string u = user;
+	if (u.empty())
+		u = getCurrentUser();
+
+	string ret = _rcoreRecord->getUserRecordsDir();
+	if (*ret.end() != get_path_spliter())
+		ret += get_path_spliter();
+	ret += u;
+	return ret;
+}
+
+string RCore::getUserDictDir(const string dictname, const string user) {
+	string user_dir = getUserDir(user);
+	if (*user_dir.end() != get_path_spliter())
+		user_dir += get_path_spliter();
+	string ret = user_dir;
+	ret += dictname;
+	return ret;
+}
+
 
 bool RCore::setUserDictDir(const string dictpath) {
 	if (!_userRecord || !_dictRecord)

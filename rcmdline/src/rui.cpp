@@ -6,7 +6,10 @@ RUI::RUI()
 }
 
 void RUI::show_msg(const string msg) {
-	cout<<msg<<endl;
+	string str = msg;
+	if (*str.end() == '\n' || *str.end() == '\r')
+	str = str.substr(0,str.length() - 1);
+	cout<<str<<endl;
 }
 
 void RUI::show_warning(const string warning) {
