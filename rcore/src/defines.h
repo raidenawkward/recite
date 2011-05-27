@@ -27,4 +27,10 @@
 #define INI_KEY_RCORE_USERDIR "rcore.user.dir"
 #define INI_KEY_RCORE_CURRENT_USER "core.user.current"
 
+
+// defines for RDiet
+#define RDIET_LIST_KEY "list"
+
+
+
 #endif //DEFINES_H

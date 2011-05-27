@@ -9,6 +9,7 @@ set (RCORE_SOURCES
 	src/rprop.cpp
 	src/rtime.cpp
 	src/md5.c
+	src/reciter.cpp
 )
 
 INCLUDE_DIRECTORIES(
