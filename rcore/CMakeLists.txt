@@ -10,6 +10,7 @@ set (RCORE_SOURCES
 	src/rtime.cpp
 	src/md5.c
 	src/reciter.cpp
+	src/rindexgenerator.cpp
 )
 
 INCLUDE_DIRECTORIES(

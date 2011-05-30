@@ -12,6 +12,7 @@ using namespace std;
 #include "defines.h"
 #include "rtime.h"
 #include "rrecord.h"
+#include "rindexgenerator.h"
 
 string longToString(long l);
 
@@ -36,6 +37,7 @@ public:
 	bool load(RDate& date);
 
 	RIndexList& getList() { return _dietList; }
+	RDate& getDate() { return _date; }
 
 protected:
 	void setDir(const string dir);
@@ -51,7 +53,34 @@ private:
 class Reciter
 {
 public:
-	Reciter();
+	Reciter(const string dir, RDate date = RDate());
+
+	RIndexList getIndexList();
+	bool saveRecord();
+	RDate getDate();
+	bool setDate(RDate& date);
+
+
+	void setIndexGenerator(IndexGeneratorBase* generator) { _indexGenerator = generator; }
+	IndexGeneratorBase* getIndexGenerator() { return _indexGenerator; }
+
+	void setDict(DictBase* dict) { _dict = dict; }
+	DictBase* getDict() { return _dict; }
+
+	long getNextIndex();
+	long getPrevIndex();
+	long getIndex(int index);
+	int currentIndex();
+	int wordCount();
+
+protected:
+	virtual void loadIndexGenerator();
+
+private:
+	RDiet *_diet;
+	IndexGeneratorBase *_indexGenerator;
+	DictBase* _dict;
+	int _currentIndex;
 };
 
 

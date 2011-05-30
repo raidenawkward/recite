@@ -13,6 +13,7 @@
 #include "rtime.h"
 #include "rrecord.h"
 #include "defines.h"
+#include "reciter.h"
 
 using namespace std;
 
